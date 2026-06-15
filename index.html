@@ -127,7 +127,10 @@ body {
   color: var(--text1);
   position: fixed;
   width: 100%;
-  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
 }
@@ -1564,14 +1567,17 @@ body {
 .sage-profile-arrow { color: var(--text3); font-size: 16px; flex-shrink: 0; }
 
 .tab-bar {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
   height: calc(var(--tab-h) + var(--safe-b));
   padding-bottom: var(--safe-b);
   background: var(--surface);
   border-top: 1px solid var(--border);
   display: flex;
-  z-index: 100;
+  z-index: 200;
 }
 .tab-btn {
   flex: 1;
@@ -4330,6 +4336,197 @@ const QUOTES = [
   // ── ハリエット・ビーチャー・ストウ = nightingale3 ──
   { id: 618, sage: 'nightingale3', orig: 'Never give up, for that is just the place and time that the tide will turn.', ja: '決して諦めるな。なぜならそこがまさに潮目が変わる場所と時だからだ。', source: 'ハリエット・ビーチャー・ストウの言葉', desc: 'ストウは「アンクル・トムの小屋」を書くまで無名の主婦だった。奴隷制という巨大な社会悪に立ち向かう力が自分にあるとは思わなかった。しかし書き続けた。諦めたくなる瞬間こそが、実は潮目が変わる瞬間だ。歴史的変革はいつも「もう無理だ」という絶望の直後に起きることが多い。あなたが今諦めようとしているその瞬間が、実は潮目かもしれない。', cats: ['adversity', 'motivation', 'challenge'], tags: ['諦め', '潮目', '変革'], likes: 108, season: null, mmdd: null },
   { id: 619, sage: 'nightingale3', orig: 'The bitterest tears shed over graves are for words left unsaid and deeds left undone.', ja: '墓の前で流す最も苦い涙は、言わなかった言葉とやらなかった行動のためのものだ。', source: '「アンクル・トムの小屋」より', desc: 'ストウは奴隷制に抵抗した人々の「やらなかった後悔」を見続けた。「言えばよかった」「助ければよかった」「立ち上がればよかった」という後悔は死後も消えない。マーク・トウェインの「20年後にやらなかったことを後悔する」と同じ洞察だ。今日言える言葉を、今日できる行動を先延ばしにしないこと。後悔は死後に重くなる。', cats: ['time', 'motivation', 'relation'], tags: ['後悔', '言葉', '行動'], likes: 113, season: null, mmdd: null },
+
+  // ── ソクラテス追加 ──
+  { id: 620, sage: 'socrates', orig: 'To find yourself, think for yourself.', ja: '自分を見つけるには、自分で考えよ。', source: 'ソクラテスの言葉', desc: 'ソクラテスは弟子に答えを与えなかった。問いを投げかけ、対話を通じて弟子自身が真実に気づくよう導いた。「産婆術」と呼ばれるこの手法の根底にあるのは、真実は外から与えられるのではなく内側から掘り起こされるという信念だ。他者の意見・権威の言葉・多数派の常識。これらを鵜呑みにするのではなく、自分で考えること。それが自分を発見する唯一の道だ。', cats: ['growth', 'mind', 'motivation'], tags: ['自己', '思考', '発見'], likes: 108, season: null, mmdd: null },
+  { id: 621, sage: 'socrates', orig: 'Education is the kindling of a flame, not the filling of a vessel.', ja: '教育とは炎に火をつけることであり、器を満たすことではない。', source: 'ソクラテスの言葉', desc: 'ソクラテスは生涯一冊の本も書かなかった。知識を詰め込む「教育」ではなく、学ぶことへの情熱に火をつける「触媒」として生きた。プラトン・アリストテレス・アルキビアデスという天才たちを育てたのは知識の伝達ではなく知的情熱の点火だった。子育て・教育・リーダーシップのすべてに通じる原則だ。あなたは誰かの炎に火をつけているか。', cats: ['growth', 'relation', 'motivation'], tags: ['教育', '炎', '情熱'], likes: 117, season: null, mmdd: null },
+
+  // ── プラトン追加 ──
+  { id: 622, sage: 'plato', orig: 'Wise men speak because they have something to say; fools because they have to say something.', ja: '賢者は言うべきことがあるから語る。愚者は何か言わなければならないから語る。', source: 'プラトンの言葉', desc: 'プラトンはソクラテスの沈黙の美学を継承した。会議・議論・SNS。多くの言葉が「何か言わなければ」という強迫から生まれている。しかし本当に価値ある言葉は内側から言わずにいられなくて溢れ出るものだ。言葉の量より質。言わないことへの勇気も言葉の一形態だ。今日あなたが語った言葉のどれが「言うべきこと」でどれが「何か言わなければ」から来たか。', cats: ['work', 'mind', 'relation'], tags: ['言葉', '沈黙', '賢者'], likes: 113, season: null, mmdd: null },
+
+  // ── エピクロス追加 ──
+  { id: 623, sage: 'epicurus', orig: 'Do not spoil what you have by desiring what you have not; remember that what you now have was once among the things you only hoped for.', ja: '持っていないものを欲することで今持っているものを台無しにするな。今持っているものがかつては望んでいただけのものだったことを思い出せ。', source: 'エピクロスの言葉', desc: 'エピクロスは「庭で友人と質素な食事をするだけで幸せだ」と実践した。人間は手に入れた瞬間に次のものを求め始める。「あれさえあれば幸せになれる」という感覚が際限なく続く。しかしかつて「あれさえあれば」と思っていたものを今すでに持っていることに気づいたとき、幸福はすでに手の中にあることがわかる。感謝の実践が幸福の実践だ。', cats: ['mind', 'motivation', 'time'], tags: ['感謝', '欲望', '幸福'], likes: 116, season: null, mmdd: null },
+
+  // ── ヴォルテール追加 ──
+  { id: 624, sage: 'voltaire', orig: 'God is a comedian playing to an audience that is afraid to laugh.', ja: '神はコメディアンだ。笑うことを恐れている観客の前で演じている。', source: 'ヴォルテールの言葉', desc: 'ヴォルテールのユーモアと宗教批判が凝縮された言葉だ。人生の不条理・偶然の残酷さ・権威の滑稽さ。これらを笑える能力が精神的成熟を示す。チャップリンが「クローズアップで見れば悲劇、ロングショットで見れば喜劇」と言ったように、距離を置いて見れば悲劇も喜劇に見える。笑える能力は苦境への最強の防衛だ。あなたは自分の人生の「喜劇」を笑えるか。', cats: ['mind', 'adversity', 'time'], tags: ['神', 'ユーモア', '笑い'], likes: 98, season: null, mmdd: null },
+
+  // ── ルソー追加 ──
+  { id: 625, sage: 'rousseau', orig: 'People who know little are usually great talkers, while men who know much say little.', ja: '知識が少ない人は大抵おしゃべりだ。多くを知る人は少ししか語らない。', source: 'エミール', desc: 'ルソーはこの言葉で知識と言葉の逆比例関係を示した。知識が浅いと輪郭がはっきりして断言しやすい。しかし知識が深まると複雑さ・不確実性・例外が見えてきて、軽々しく語れなくなる。専門家ほど「わからない」と言い、素人ほど断言する。あなたが最も確信を持って語ることについて、本当に深く知っているかを問い直してみよう。', cats: ['mind', 'growth', 'relation'], tags: ['知識', '言葉', '謙虚'], likes: 104, season: null, mmdd: null },
+
+  // ── カント追加 ──
+  { id: 626, sage: 'kant', orig: 'Science is organized knowledge. Wisdom is organized life.', ja: '科学は組織化された知識だ。知恵は組織化された人生だ。', source: 'カントの言葉', desc: 'カントは「純粋理性批判」で知識の構造を解明し、「実践理性批判」で道徳的行動の原理を示した。知識と知恵は別物だ。知識は情報の整理だが、知恵は人生そのものを意味ある形に組織化することだ。どれほどの知識を持っても、それが生き方に統合されなければ知恵にはならない。知識を持つ学者より知恵ある人生を生きることを目指せ。', cats: ['growth', 'mind', 'time'], tags: ['科学', '知恵', '人生'], likes: 106, season: null, mmdd: null },
+  { id: 627, sage: 'kant', orig: 'Give me matter, and I will construct a world out of it.', ja: '私に素材を与えよ。そこから世界を作り出してみせる。', source: 'カントの言葉', desc: 'カントは理性が経験の素材を整理して「私たちの世界」を構成するという「コペルニクス的転回」を哲学にもたらした。世界は客観的に存在するのではなく、私たちの認識が世界を作るという逆転の発想だ。「素材があれば世界を作る」という自信は、どんな状況にも意味と構造を見出せるという人間の能力への宣言でもある。', cats: ['mind', 'challenge', 'growth'], tags: ['創造', '理性', '世界'], likes: 91, season: null, mmdd: null },
+
+  // ── ショーペンハウアー追加 ──
+  { id: 628, sage: 'schopenhauer', orig: 'A man can do what he wants, but not want what he wants.', ja: '人間は望むことをできる。しかし何を望むかを望むことはできない。', source: 'ショーペンハウアーの言葉', desc: 'ショーペンハウアーの意志哲学の核心だ。行動は選べる。しかし欲望・衝動・好み自体は選べない。なぜある食べ物が好きで別の食べ物が嫌いなのか。なぜある人に惹かれ別の人に惹かれないのか。その「意志」は意識の外から来る。アインシュタインはこの言葉を愛用し、自由意志の問題を考えるときに引用した。あなたの「望むこと」の源泉を考えたことはあるか。', cats: ['mind', 'time', 'growth'], tags: ['意志', '欲望', '自由'], likes: 102, season: null, mmdd: null },
+
+  // ── キルケゴール追加 ──
+  { id: 629, sage: 'kierkegaard', orig: 'The most painful state of being is remembering the future, particularly the one you\'ll never have.', ja: '最も辛い存在の状態は、未来を思い出すことだ。特に決して手に入らない未来を。', source: 'キルケゴールの言葉', desc: 'キルケゴールの実存主義の最も詩的な表現の一つだ。「思い出す」のは過去のはずなのに「未来を思い出す」という逆説。実現しなかった可能性・選ばなかった道・なれなかった自分。これらへの郷愁は過去への後悔より深い痛みを持つ。しかしキルケゴールはその痛みを絶望ではなく、今この瞬間の選択への呼びかけとして捉えた。', cats: ['time', 'adversity', 'mind'], tags: ['未来', '後悔', '可能性'], likes: 111, season: null, mmdd: null },
+
+  // ── スピノザ追加 ──
+  { id: 630, sage: 'spinoza', orig: 'The highest activity a human being can attain is learning for understanding, because to understand is to be free.', ja: '人間が到達できる最高の活動は、理解するための学習だ。なぜなら理解することが自由だからだ。', source: 'スピノザの言葉', desc: 'スピノザはユダヤ教共同体から追放され孤独に生きたが、知的自由への信念は揺るがなかった。理解は最高の自由だ。なぜなら理解した瞬間、恐れは消え、偏見は溶け、真実が見える。無知は恐れと偏見と束縛を生む。しかし理解は解放をもたらす。どんな状況でも奪えない自由がある。それは理解する知性だ。学ぶことへの情熱が最も純粋な自由への道だ。', cats: ['growth', 'mind', 'motivation'], tags: ['理解', '自由', '学習'], likes: 109, season: null, mmdd: null },
+
+  // ── ヒューム追加 ──
+  { id: 631, sage: 'hume', orig: 'It is not reason that is the guide of life, but custom.', ja: '人生を導くのは理性ではなく習慣だ。', source: '人間知性研究', desc: 'ヒュームの経験論の実践的帰結だ。私たちは理性で行動を決めていると思っているが、実際には過去の習慣・経験・パターンが行動のほとんどを決めている。「なぜこうするのか」を問うと、答えは「いつもそうしているから」であることが多い。これは問題ではなく現実だ。だからこそ良い習慣を意識的に作ることが、人生を変える最も確実な方法だ。', cats: ['growth', 'mind', 'work'], tags: ['習慣', '理性', '実践'], likes: 107, season: null, mmdd: null },
+
+  // ── ヘラクレイトス追加 ──
+  { id: 632, sage: 'heraclitus', orig: 'The soul is dyed the color of its thoughts.', ja: '魂は思考の色に染まる。', source: 'ヘラクレイトスの断片', desc: 'ヘラクレイトスは万物の流転の哲学者だが、この言葉は思考と存在の深い関係を示している。何を考えるかが何者であるかを決める。憎しみを考え続ければ憎しみの色に染まる。美しさを考え続ければ美しさの色に染まる。「人は考えることになる」というブッダの言葉と同じ真実だ。今日あなたの魂はどんな色に染まっているか。それはあなたが選んでいる色か。', cats: ['mind', 'motivation', 'growth'], tags: ['魂', '思考', '色'], likes: 112, season: null, mmdd: null },
+
+  // ── ピタゴラス追加 ──
+  { id: 633, sage: 'pythagoras', orig: 'Choose rather to be strong of soul than strong of body.', ja: '肉体の強さより魂の強さを選べ。', source: 'ピタゴラスの言葉', desc: 'ピタゴラスは数学と哲学と宗教を統合した独自の生き方を実践した。肉体の強さは年齢とともに衰える。しかし魂の強さは磨けば磨くほど深くなる。思考の力・精神の柔軟性・価値観の確固たさ・感情のコントロール。これらは老いても失われない。ソクラテスが70歳で最も輝き、ゲーテが80代に最高傑作を書き、北斎が80代に最高の絵を描いたように。', cats: ['mind', 'growth', 'time'], tags: ['魂', '肉体', '強さ'], likes: 103, season: null, mmdd: null },
+
+  // ── エピクテトス追加 ──
+  { id: 634, sage: 'epictetus', orig: 'First say to yourself what you would be; and then do what you have to do.', ja: 'まず自分がどうありたいかを言え。そして必要なことをせよ。', source: '語録', desc: 'エピクテトスのシンプルで力強い行動指針だ。アイデンティティが行動に先立つ。「私はどんな人間か」より「私はどんな人間でありたいか」を先に決めること。そのビジョンから逆算して、今日の行動が見えてくる。「成功した人間になりたい」ではなく「誠実な人間でありたい」と決めたとき、今日誠実に行動する理由ができる。存在が行動を決める。', cats: ['motivation', 'work', 'growth'], tags: ['アイデンティティ', '行動', 'あり方'], likes: 110, season: null, mmdd: null },
+
+  // ── モンテーニュ追加 ──
+  { id: 635, sage: 'voltaire2', orig: 'I quote others only in order the better to express myself.', ja: '私が他者を引用するのは、自分をより良く表現するためだ。', source: 'エセー', desc: 'モンテーニュは「エセー」に膨大な引用を含めたが、それは権威への依存ではなく自分の思索を深めるための対話だった。他者の言葉を引用するとき、それが自分の言葉より正確に自分の内側を表現しているとき、引用は最高の自己表現になる。読書とは過去の偉大な精神との対話だ。その対話を通じて自分の声がより明確になる。あなたが最も共鳴する「他者の言葉」は何か。', cats: ['growth', 'mind', 'work'], tags: ['引用', '自己表現', '対話'], likes: 97, season: null, mmdd: null },
+
+  // ── パスカル追加 ──
+  { id: 636, sage: 'pascal', orig: 'The eternal silence of these infinite spaces frightens me.', ja: 'これらの無限の空間の永遠の沈黙が私を怖がらせる。', source: 'パンセ', desc: 'パスカルが夜空を見上げて感じた宇宙的恐怖の言葉だ。無限の宇宙の中の人間の小ささへの畏怖。しかしパスカルはその恐怖から逃げず、向き合い続けた。その恐怖こそが「考える葦」としての人間の偉大さへの認識を生んだ。宇宙の無限と人間の有限の間の張力の中に、哲学・宗教・詩が生まれる。あなたは夜空を見上げてその沈黙を感じたことがあるか。', cats: ['mind', 'time', 'adversity'], tags: ['宇宙', '恐怖', '無限'], likes: 103, season: null, mmdd: null },
+  { id: 637, sage: 'pascal', orig: 'Small minds are concerned with the extraordinary, great minds with the ordinary.', ja: '小さな心は非凡なことに関心を持つ。偉大な心は平凡なことに関心を持つ。', source: 'パスカルの言葉', desc: 'パスカルは数学・物理・哲学・神学という全く異なる分野で革命的な業績を残したが、その出発点は常に日常の「当然」への疑問だった。大気圧の発見も、計算機の発明も、信仰の問題も、みんなが見過ごす「当然」への問いから生まれた。天才とは非日常に目を向けるのではなく、日常に人が見えないものを見る能力だ。', cats: ['mind', 'growth', 'motivation'], tags: ['平凡', '偉大', '日常'], likes: 109, season: null, mmdd: null },
+
+  // ── ジョン・ロック追加 ──
+  { id: 638, sage: 'locke', orig: 'No man\'s knowledge here can go beyond his experience.', ja: 'ここでは誰の知識も自分の経験を超えることはできない。', source: '人間知性論', desc: 'ロックの経験論の核心だ。生まれながらに持つ「生得観念」を否定し、すべての知識は経験から来るという「白紙（タブラ・ラサ）」説を提唱した。だからこそ経験の質が人間の質を決める。本を読む経験・人と話す経験・失敗する経験・感動する経験。どんな経験を積み重ねるかが知識と知恵の源泉だ。あなたは今日、どんな経験を求めているか。', cats: ['growth', 'mind', 'time'], tags: ['経験', '知識', '成長'], likes: 98, season: null, mmdd: null },
+
+  // ── スキピオ追加 ──
+  { id: 639, sage: 'hannibal2', orig: 'In war, the moral is to the physical as three is to one.', ja: '戦争において、精神は肉体の3倍の重みを持つ。', source: 'ナポレオンがスキピオを参照して語った言葉', desc: 'ナポレオンはスキピオやハンニバルの軍事哲学を研究し、戦争における士気・信念・精神の重要性を数値化した。物理的な武力より心理的な要因が戦況を決めることが多い。ビジネス・スポーツ・教育でも同様だ。能力が同等なら精神力・やる気・信念が3倍の差を生む。あなたのチームの「精神の強さ」はどれほどか。', cats: ['adversity', 'motivation', 'work'], tags: ['精神', '士気', '戦略'], likes: 99, season: null, mmdd: null },
+
+  // ── キング牧師追加 ──
+  { id: 640, sage: 'mlk', orig: 'The time is always right to do what is right.', ja: '正しいことをする時は、常に今だ。', source: 'キング牧師の言葉', desc: 'キング牧師は公民権運動で「今は時期尚早だ」「もう少し待て」という声に何度も直面した。しかし正義を待たせる理由はない。正しいことをする「適切な時期」を待っているうちに、生涯が終わる。正義の遅延は正義の拒否だ。今日できる善いことを明日に先延ばしにするあらゆる理由を疑え。正しいことをする時は常に今だ。', cats: ['challenge', 'motivation', 'work'], tags: ['正義', '今', '行動'], likes: 118, season: null, mmdd: null },
+
+  // ── チャップリン追加 ──
+  { id: 641, sage: 'chaplin', orig: 'Nothing is permanent in this wicked world, not even our troubles.', ja: 'この邪悪な世界では何も永続しない。私たちの悩みでさえも。', source: 'チャップリンの言葉', desc: 'チャップリンのこの言葉は一見暗く見えて深い希望を含んでいる。良いことも悪いことも永続しない。喜びはやがて終わるが、苦しみもやがて終わる。「これも過ぎ去るだろう」という視点は、苦境の中での最強の精神的支柱だ。ブッダの「諸行無常」、エピクテトスの「変化を受け入れよ」と同じ真実を、チャップリンはユーモアで包んで示した。', cats: ['adversity', 'time', 'motivation'], tags: ['無常', '悩み', '希望'], likes: 114, season: null, mmdd: null },
+  { id: 642, sage: 'chaplin', orig: 'A day without laughter is a day wasted.', ja: '笑いのない一日は無駄にした一日だ。', source: 'チャップリンの言葉', desc: 'チャップリンは世界恐慌・二度の世界大戦・赤狩りという時代を生きながら、笑いを武器に戦い続けた。笑いは現実逃避ではなく、現実への最強の抵抗だ。ユーモアは人間性の証明だ。最も深い苦境の中でも笑える能力を持つ人間は、精神的に最も自由だ。今日あなたは声を上げて笑ったか。笑えない一日は人間的な何かを失っている。', cats: ['motivation', 'time', 'mind'], tags: ['笑い', '人間性', '一日'], likes: 116, season: null, mmdd: null },
+
+  // ── ライト兄弟追加 ──
+  { id: 643, sage: 'wright', orig: 'Isn\'t it astonishing that all these secrets were preserved for so many years just so we could discover them!', ja: 'これらの秘密がこんなに長い間保存されてきたのは、私たちが発見するためだったとは驚くべきことではないか！', source: 'オーヴィル・ライトの言葉', desc: '初飛行成功後にライト兄弟が語ったとされる言葉だ。この喜びと驚嘆が科学者・発明家・探求者の原動力だ。宇宙はまだ無数の秘密を隠している。それらは発見されることを待っている。あなたが次に発見するかもしれない。好奇心と探求心を持ち続けることが、宇宙に隠された秘密への敬意であり招待への返答だ。', cats: ['growth', 'motivation', 'challenge'], tags: ['発見', '驚き', '秘密'], likes: 101, season: null, mmdd: null },
+
+  // ── ガリレオ追加 ──
+  { id: 644, sage: 'galileo', orig: 'I have never met a man so ignorant that I couldn\'t learn something from him.', ja: '私はこれほど無知な人間に会ったことがない、というほど無知な人間に会ったことがない。', source: 'ガリレオの言葉', desc: 'ガリレオはこの言葉で「誰からでも学べる」という開かれた姿勢を示した。権威・専門家・天才だけが教師なのではない。最も無知に見える人間からも、その無知の形・間違いのパターン・疑問の立て方から学べることがある。完全に何も学べない人間はいない。あなたが「この人から学べることはない」と思ったことはないか。その思いこそが学びの壁だ。', cats: ['growth', 'relation', 'mind'], tags: ['学び', '謙虚', '誰からでも'], likes: 104, season: null, mmdd: null },
+
+  // ── マキャベリ追加 ──
+  { id: 645, sage: 'machiavelli', orig: 'Where the willingness is great, the difficulties cannot be great.', ja: '意志が大きければ、困難は大きくなれない。', source: '君主論', desc: 'マキャベリは「君主論」で冷酷な現実主義を説いたが、同時に意志と決意の力への深い信頼も持っていた。困難の大きさは客観的に決まるのではなく、向き合う人間の意志の大きさとの相対関係で決まる。小さな意志には小さな困難も大きく見える。大きな意志には大きな困難も小さくなる。あなたの意志は困難を縮小させているか、拡大させているか。', cats: ['motivation', 'adversity', 'challenge'], tags: ['意志', '困難', '決意'], likes: 108, season: null, mmdd: null },
+
+  // ── ボブ・マーリー追加 ──
+  { id: 646, sage: 'marley', orig: 'One good thing about music, when it hits you, you feel no pain.', ja: '音楽の良いところは、それがあなたに当たったとき、痛みを感じないことだ。', source: 'ボブ・マーリーの言葉', desc: 'マーリーはジャマイカのスラムで育ち、人種差別・貧困・暴力を体験した。しかし音楽はその苦痛を変容させた。言葉で届かないところに音楽は届く。論理で解けない感情の結び目を音楽は解く。神経科学的にも音楽は痛みの知覚を変えることが証明されている。あなたが苦しいとき、音楽はあなたの痛みを消してくれているか。', cats: ['adversity', 'motivation', 'mind'], tags: ['音楽', '痛み', '癒し'], likes: 117, season: null, mmdd: null },
+  { id: 647, sage: 'marley', orig: 'Emancipate yourselves from mental slavery; none but ourselves can free our minds.', ja: '精神的な奴隷状態から自分を解放せよ。私たち自身以外に私たちの心を解放できる者はいない。', source: 'レデンプション・ソング', desc: 'マーリーはこの言葉でレゲエ音楽の精神的核心を示した。肉体的な奴隷制は終わったかもしれないが、精神的な奴隷制は形を変えて続いている。他者の評価・社会の期待・恐れ・偏見。これらが心を縛る見えない鎖だ。その鎖を切れるのは自分自身だけだ。外の世界を変えようとする前に、内側の精神的な奴隷状態から自分を解放することが先だ。', cats: ['motivation', 'mind', 'challenge'], tags: ['精神的自由', '奴隷', '解放'], likes: 119, season: null, mmdd: null },
+
+  // ── 上杉謙信追加 ──
+  { id: 648, sage: 'uesugi', orig: '武の道とは死ぬことにある。その覚悟が己を自由にする。', ja: '武の道は死を覚悟すること。その覚悟が己を最も自由にする。', source: '上杉謙信の言葉', desc: '上杉謙信は戦国時代最強の武将の一人とされるが、その強さの源は技術より覚悟だった。死を覚悟した者は恐れを超える。恐れを超えた者は最も自由に行動できる。失うものを手放した覚悟が最大の強さを生む。西郷隆盛の「命もいらず名もいらず」と同じ洞察だ。あなたが何かを恐れているとき、その恐れの根には何があるか。それを手放したとき何が起きるか。', cats: ['adversity', 'motivation', 'mind'], tags: ['覚悟', '自由', '武士道'], likes: 104, season: null, mmdd: null },
+
+  // ── ダーウィン追加 ──
+  { id: 649, sage: 'darwin', orig: 'A scientific man ought to have no wishes, no affections, a mere heart of stone.', ja: '科学者は欲望も愛着も持つべきではない、ただ石のような心を持つべきだ。', source: 'ダーウィンの手紙', desc: 'ダーウィン自身が書いたこの言葉は、真実への探求における客観性の重要さへの諧謔だ。実際にダーウィンは地動説を信じ「神の創造」を否定することへの深い個人的葛藤を抱えていた。しかし証拠が示す真実に従う誠実さを選んだ。愛着・信仰・感情が真実認識を曇らせる危険を自覚した上で、なおも客観的に観察しようとする科学的誠実さ。これが科学の精神だ。', cats: ['work', 'mind', 'challenge'], tags: ['科学', '客観性', '誠実'], likes: 94, season: null, mmdd: null },
+
+  // ── チェーホフ追加 ──
+  { id: 650, sage: 'chekhov', orig: 'Any idiot can face a crisis—it\'s the day-to-day living that wears you out.', ja: 'どんな馬鹿でも危機には立ち向かえる。人を消耗させるのは日々の生活だ。', source: 'チェーホフの言葉', desc: 'チェーホフの短編小説の多くは劇的な事件ではなく、日常の倦怠・小さな失望・繰り返すパターンを描く。非常事態は人間を集中させ行動させる。しかし日常のゆっくりとした消耗こそが本当に人間を疲弊させる。英雄的瞬間より、毎日の誠実な継続の方が難しい。今日一日を丁寧に生きることへの敬意をチェーホフは作品で示し続けた。', cats: ['adversity', 'time', 'mind'], tags: ['日常', '消耗', '継続'], likes: 111, season: null, mmdd: null },
+
+  // ── オスカー・ワイルド追加 ──
+  { id: 651, sage: 'wilde', orig: 'I always pass on good advice. It is the only thing to do with it. It is never of any use to oneself.', ja: '私は常に良いアドバイスを他者に渡す。それが唯一の使い道だ。自分自身には決して役に立たないから。', source: 'オスカー・ワイルドの言葉', desc: 'ワイルドの逆説的なユーモアの傑作だ。私たちは他者に対してよく見えているものが、自分自身に対しては盲点になる。アドバイスは自分が一番よく知っているのに実践できないことを他者に伝えるものだ。「人に言えるなら自分でやれ」という皮肉でもある。あなたが他者によくするアドバイスの中で、自分自身がしていないことはないか。', cats: ['mind', 'relation', 'growth'], tags: ['アドバイス', 'ユーモア', '逆説'], likes: 110, season: null, mmdd: null },
+
+  // ── マーク・トウェイン追加 ──
+  { id: 652, sage: 'twain', orig: 'Never put off till tomorrow what may be done day after tomorrow just as well.', ja: '明後日でも同じくらいうまくできることを明日まで先延ばしにするな。', source: 'マーク・トウェインの言葉', desc: 'トウェインの最高のユーモアの一つだ。「先延ばしをするな」という説教への完璧な逆説的反論に見えるが、実は深い洞察がある。すべてのことを今すぐやる必要はない。優先順位を見極めて、本当に今日やるべきことと明日でも良いことを区別すること。強迫的な「今すぐやらなければ」より、賢い判断で今日の時間を使うことが生産性の本質だ。', cats: ['work', 'time', 'mind'], tags: ['先延ばし', '優先順位', 'ユーモア'], likes: 113, season: null, mmdd: null },
+  { id: 653, sage: 'twain', orig: 'It is easier to fool people than to convince them that they have been fooled.', ja: '人を騙すことは、騙されたと納得させることより易しい。', source: 'マーク・トウェインの言葉', desc: 'トウェインのこの観察は現代のフェイクニュース・陰謀論・詐欺の心理を見事に説明している。一度信じてしまったことを覆すには、大きな認知的・感情的コストがかかる。人間には信念を守ろうとする本能がある。だからこそ最初から懐疑的に考える習慣が重要だ。「本当にそうか？」という問いを日常的に持つことが、騙されないための最善の防衛だ。', cats: ['mind', 'relation', 'work'], tags: ['騙す', '信念', '批判的思考'], likes: 108, season: null, mmdd: null },
+
+  // ── ヘミングウェイ追加 ──
+  { id: 654, sage: 'hemingway', orig: 'Write hard and clear about what hurts.', ja: '痛むことについて、力強く明確に書け。', source: 'ヘミングウェイの言葉', desc: 'ヘミングウェイの文学論の核心だ。「氷山理論」で知られる彼の文体は、感情を直接書かず具体的な事実で示す。しかし書く動機は常に「痛むこと」だった。戦争・喪失・愛・死。それらを曖昧にせず力強く明確に書くこと。文学だけでなく、あらゆる誠実なコミュニケーションに通じる原則だ。あなたが最も伝えたい「痛むこと」は何か。', cats: ['work', 'mind', 'adversity'], tags: ['書く', '痛み', '誠実'], likes: 106, season: null, mmdd: null },
+
+  // ── カフカ追加 ──
+  { id: 655, sage: 'kafka', orig: 'Start with what is right rather than what is acceptable.', ja: '受け入れられることからではなく、正しいことから始めよ。', source: 'カフカの言葉', desc: 'カフカは生涯、自分の作品を発表することを躊躇い続けた。しかしその作品は「受け入れられるもの」ではなく「正しいもの」を書き続けた結果だ。社会的承認・流行・市場のニーズより、自分の内側の「正しさ」から始めること。カフカの作品は死後に発表され百年後も読まれている。「受け入れられること」は一時的だが「正しいこと」は永続する。', cats: ['work', 'motivation', 'mind'], tags: ['正しさ', '受容', '誠実'], likes: 105, season: null, mmdd: null },
+
+  // ── 夏目漱石追加 ──
+  { id: 656, sage: 'soseki', orig: '往来を歩いている人間を捕まえて、なんのために生きているかと聞いたら、大抵は答えに窮するだろう。', ja: '往来の人間に「なんのために生きているか」を聞けば、大抵は答えに窮する。しかしその問いこそが人生で最も重要だ。', source: '漱石の言葉（「草枕」より）', desc: '漱石は「則天去私」という境地を目指しながら、「なぜ生きるか」を問い続けた。この問いに答えられない人間の多さを漱石は観察した。答えられないことは恥ではない。しかしその問いと向き合うことなしに人生を送ることは、何かを根本的に失っている。あなたは今日「なんのために生きているか」と問われたら、どう答えるか。', cats: ['motivation', 'time', 'mind'], tags: ['人生の意味', '問い', '目的'], likes: 109, season: null, mmdd: null },
+
+  // ── 太宰治追加 ──
+  { id: 657, sage: 'dazai', orig: '人間は皆、同じ悲しみを持っている。ただ表現の方法が違うだけだ。', ja: '人間は皆、同じ悲しみを持っている。ただ表現の方法が違うだけだ。', source: '太宰治の言葉', desc: '太宰の作品が世代を超えて読まれ続ける理由はここにある。彼の自己否定・孤独・悲しみは極端に見えて、実は誰もが心の奥に持っているものだ。表現が違うだけで、悲しみの本質は共通している。「自分だけこんなに苦しいのか」という孤独感が太宰を読むことで和らぐ。あなたの悲しみも、別の誰かが同じように感じている。孤独は孤独でないことに、文学は気づかせてくれる。', cats: ['relation', 'adversity', 'mind'], tags: ['悲しみ', '共通', '孤独'], likes: 115, season: null, mmdd: null },
+  { id: 658, sage: 'dazai', orig: '自分には、人間の生活というものが、見当つかないのです。', ja: '自分には、人間の生活というものが、見当つかないのです。', source: '人間失格', desc: '「人間失格」の冒頭に続く文章だ。世間との根本的な断絶感・疎外感・自分だけが人間の基本的なルールを理解できていないという感覚。この感覚を多くの読者が自分のものとして受け取る。特に若い世代・感受性の強い人・社会との適合を強要された人々が。この「見当つかない」という感覚を恥じなくていい。それはむしろ深く考えている人間の正直な告白だ。', cats: ['adversity', 'mind', 'relation'], tags: ['疎外', '人間', '正直'], likes: 107, season: null, mmdd: null },
+
+  // ── 山本五十六追加 ──
+  { id: 659, sage: 'yamamoto', orig: 'やってみせ、言って聞かせて、させてみせ、ほめてやらねば、人は動かじ。', ja: 'やってみせ、言って聞かせて、させてみせ、ほめてやらねば、人は動かじ。', source: '山本五十六の言葉', desc: '山本五十六の最も有名な言葉だ。現代のリーダーシップ・教育・コーチングの原則をこの一文に集約している。まず自分がやってみせる（モデリング）。次に説明する（教育）。次に実践させる（経験学習）。最後にほめる（承認・強化）。この四つのステップが人を動かす唯一の方法だ。命令だけでは人は動かない。この言葉は現代の人材育成の根本原則として今も輝く。', cats: ['work', 'relation', 'motivation'], tags: ['リーダーシップ', '教育', '人材'], likes: 121, season: null, mmdd: null },
+
+  // ── 西郷隆盛追加 ──
+  { id: 660, sage: 'saigo', orig: '人を相手にせず天を相手にして、己を尽くし、人を咎めず。', ja: '人ではなく天を相手に己を尽くせ。そして人を咎めるな。', source: '南洲翁遺訓', desc: '西郷隆盛の人生哲学の核心だ。他者の評価・批判・承認ではなく、より高い基準（天）に照らして自分を評価すること。人を責めるより自分の誠実さを問うこと。この姿勢が西郷を「最後のサムライ」として今も日本人に慕わせる理由だ。職場の評価・他者の目・社会の判断ではなく、自分の天（良心・使命・誠実さ）に照らして今日を生きる。', cats: ['mind', 'motivation', 'work'], tags: ['天', '誠実', '内省'], likes: 106, season: null, mmdd: null },
+
+  // ── 福沢諭吉追加 ──
+  { id: 661, sage: 'fukuzawa', orig: '学問の目的は、ただ読書のみにあらず。精神の独立にあり。', ja: '学問の目的は読書だけにあらず。精神の独立にある。', source: '学問のすゝめ', desc: '福沢諭吉が「学問のすゝめ」で説いたのは単なる知識の蓄積ではなく、精神的な自立だった。本を読んで知識を増やすことは手段に過ぎない。目的は権威・慣習・他者に依存せず自分で考え判断できる精神的な独立だ。「独立自尊」という慶應の精神はここから来る。知識は精神の独立のための道具だ。あなたの学問は精神を独立させているか、依存させているか。', cats: ['growth', 'motivation', 'mind'], tags: ['学問', '独立', '精神'], likes: 108, season: null, mmdd: null },
+
+  // ── 孟子追加 ──
+  { id: 662, sage: 'mencius', orig: '仁者は敵なし。', ja: '仁の心を持つ者には敵がいない。', source: '孟子 梁恵王上', desc: '孟子の「仁者無敵」は「強すぎて敵がいない」という意味ではない。真の仁（人への愛と思いやり）を持つ者は人々の心を味方にするため、敵を作らないという意味だ。力で人を制する者には反発と敵対が生まれる。しかし愛と思いやりで接する者には人々が自然に集まり協力する。最強の武器は刀でも言葉でもなく、真の仁の心だ。', cats: ['relation', 'motivation', 'work'], tags: ['仁', '敵', '愛'], likes: 107, season: null, mmdd: null },
+  { id: 663, sage: 'mencius', orig: '富貴は心を淫し、貧賤は志を移す。威武は屈することあたわず。', ja: '富貴は心を堕落させ、貧賤は意志を曲げる。しかし威力は志を屈服させることができない。', source: '孟子 滕文公下', desc: '孟子の「大丈夫（本物の男）」の定義だ。富になっても堕落せず、貧しくても志を失わず、どんな権力にも意志を曲げない。これを「大丈夫」という。現代でいえば環境に左右されず自分の価値観と志を保つ人格的強さだ。成功して驕らず、失敗して卑屈にならず、圧力にも屈しない。これが最も困難で最も価値ある人間の強さだ。', cats: ['adversity', 'motivation', 'mind'], tags: ['大丈夫', '志', '不屈'], likes: 103, season: null, mmdd: null },
+
+  // ── 荘子追加 ──
+  { id: 664, sage: 'zhuangzi', orig: '吾生也有涯、而知也无涯。以有涯随无涯、殆已。（命に限りあれど知に限りなし）', ja: '命には限りがあり知識には限りがない。有限で無限を追うのは危うい。しかし知ることをやめることも道ではない。', source: '荘子 養生主', desc: '荘子のこの言葉への深読みだ。有限の命で無限の知識を追うことの危うさを示しながら、荘子自身は膨大な思索を残した。矛盾しているように見えるが、荘子が言うのは「量」の問題だ。知識を際限なく積み上げるより、本質的な智慧を深めること。「学びて思わざれば罔し」という孔子の言葉と合わせて、知ることと考えることのバランスが「道」だ。', cats: ['time', 'mind', 'growth'], tags: ['知識', '命', 'バランス'], likes: 98, season: null, mmdd: null },
+
+  // ── 孫子追加 ──
+  { id: 665, sage: 'sunzi', orig: '上兵は謀を伐ち、其の次は交を伐ち、其の次は兵を伐ち、其の下は城を攻む。', ja: '最上の戦略は謀略を崩すこと。次は同盟を断つこと。次は軍を撃つこと。最下は城を攻めること。', source: '孫子の兵法 謀攻篇', desc: '孫子の戦略の優先順位だ。最も高度な戦略は敵の計画段階で潰すこと。次いで敵の同盟関係を断つこと。次いで野戦で破ること。最も低級なのが城攻めだ。現代のビジネス・競争・交渉でも同様だ。対立・訴訟・正面衝突は最後の手段だ。相手の計画を早期に察知し、対話・交渉・戦略的行動で解決することが最高の知恵だ。', cats: ['work', 'mind', 'challenge'], tags: ['戦略', '謀略', '上策'], likes: 107, season: null, mmdd: null },
+
+  // ── 徳川家康追加 ──
+  { id: 666, sage: 'ieyasu', orig: '人の一生は重荷を負うて遠き道を行くがごとし。急ぐべからず。', ja: '人の一生は重荷を負うて遠き道を行くがごとし。急ぐべからず。', source: '東照公御遺訓', desc: '家康が江戸幕府の基盤を築いた哲学がこの言葉に凝縮されている。人生は重い荷物を背負って長い道を歩くようなものだ。焦ってはいけない。家康は織田信長・豊臣秀吉という天才たちに仕えながらじっと機を待った。関ヶ原の戦いも、大坂の陣も、すべて「急がず待つ」という哲学から来た。270年続いた江戸幕府はこの忍耐の哲学の産物だ。', cats: ['time', 'adversity', 'mind'], tags: ['忍耐', '急がず', '人生'], likes: 111, season: null, mmdd: null },
+  { id: 667, sage: 'ieyasu', orig: '不自由を常と思えば不足なし。', ja: '不自由を当たり前と思えば不満はない。', source: '東照公御遺訓', desc: '家康の「東照公御遺訓」の一節だ。不自由・制約・不便を「異常な状態」と捉えると、常に不満が生まれる。しかしそれを「普通の状態」として受け入れると、小さな自由や豊かさへの感謝が生まれる。エピクテトスの「コントロールできないものを受け入れよ」、ブッダの「執着が苦しみを生む」と同じ洞察を、家康は実践的な人生観として示した。', cats: ['mind', 'adversity', 'time'], tags: ['不自由', '受容', '感謝'], likes: 104, season: null, mmdd: null },
+
+  // ── 織田信長追加 ──
+  { id: 668, sage: 'nobunaga', orig: '是非に及ばず。（もはや是非を論じる必要はない）', ja: '是非を論じる必要はない。やるしかない。', source: '本能寺の変の際の言葉（伝承）', desc: '本能寺の変で明智光秀に裏切られたとき、信長が語ったとされる言葉だ。突然の反乱に直面した瞬間、逃げることも交渉することも選ばず「是非に及ばず」と言い放ち最後まで戦った。状況の正当性・相手の動機・対処法を考える余裕もない極限状況で、ただ今この瞬間に全力を尽くすという決意だ。人生の重大な局面で「是非に及ばず」と言い切れるかどうかが器を示す。', cats: ['adversity', 'challenge', 'motivation'], tags: ['決意', '覚悟', '本能寺'], likes: 112, season: null, mmdd: null },
+
+  // ── 坂本龍馬追加 ──
+  { id: 669, sage: 'ryoma', orig: '日本を今一度せんたくいたし申候。', ja: '日本をもう一度洗濯してみせます。', source: '坂本龍馬の手紙', desc: '1862年に姉乙女に送った手紙の言葉だ。「洗濯」という家事の言葉で日本の大変革を表現した龍馬の言語センスは独特だ。汚れた衣服を洗濯するように、腐敗した社会を根本から洗い直す。この庶民的な表現の中に、体制への根本的な批判と変革への情熱が込められている。龍馬は実際に薩長同盟・大政奉還という「洗濯」を実現した。', cats: ['challenge', 'motivation', 'time'], tags: ['洗濯', '変革', '日本'], likes: 114, season: null, mmdd: null },
+
+  // ── 宮本武蔵追加 ──
+  { id: 670, sage: 'musashi', orig: '我事において後悔せず。', ja: '私のことにおいて後悔しない。', source: '五輪書 独行道', desc: '武蔵が晩年に記した「独行道」二十一条の第一条だ。これは傲慢の宣言ではなく、常に最善を尽くすことへの誓いだ。後悔しないためには、常に全力を尽くし、誠実に、自分の判断に責任を持って行動しなければならない。後悔しない生き方は最も厳しい自己への要求だ。武蔵の60回の真剣勝負で一度も負けなかった強さの根源は、この「後悔しない」という決意にあった。', cats: ['motivation', 'work', 'mind'], tags: ['後悔', '全力', '決意'], likes: 109, season: null, mmdd: null },
+
+  // ── デカルト追加 ──
+  { id: 671, sage: 'descartes', orig: 'Divide each difficulty into as many parts as is feasible and necessary to resolve it.', ja: '各困難を、解決するために実行可能かつ必要な限り多くの部分に分割せよ。', source: '方法序説', desc: 'デカルトの「方法序説」第二規則だ。問題解決の根本的な方法として「分解」を提唱した。複雑で圧倒的な問題も、細かく分解すれば各部分は解決可能になる。現代のプロジェクト管理・問題解決・コーチングで使われる「分解」の手法は400年前にデカルトが体系化していた。あなたが今「大きすぎて手がつけられない」と感じている問題は、どう分解できるか。', cats: ['work', 'growth', 'challenge'], tags: ['分解', '問題解決', '方法'], likes: 106, season: null, mmdd: null },
+
+  // ── ジェファーソン追加 ──
+  { id: 672, sage: 'jefferson', orig: 'When you reach the end of your rope, tie a knot in it and hang on.', ja: 'ロープの端に届いたとき、結び目を作ってつかまれ。', source: 'ジェファーソンの言葉', desc: 'ジェファーソンは独立戦争という絶望的な状況で初代大統領の仕事をした。限界に達したとき、諦めるのではなく「結び目を作る」、つまり踏ん張る支点を作ることを勧める。ロープの端は危機の縁だ。そこで離してしまえば落ちる。しかし結び目という工夫が救命綱になる。限界に見えても、あと一つの工夫・一人の助け・一日の忍耐が突破口を開くことがある。', cats: ['adversity', 'challenge', 'motivation'], tags: ['限界', '踏ん張り', '工夫'], likes: 108, season: null, mmdd: null },
+
+  // ── フロイト追加 ──
+  { id: 673, sage: 'freud', orig: 'The first sign of intelligence is a thorough knowledge of what we do not know.', ja: '知性の最初のサインは、自分が知らないことを徹底的に知ることだ。', source: 'フロイトの言葉', desc: 'フロイトは人間の意識の表面下にある巨大な無意識を「発見」した。既知の意識より未知の無意識の方がはるかに大きい。この認識が精神分析の出発点だ。知性とは「知っていること」の量ではなく「知らないことを知っていること」の深さだ。ソクラテスの「無知の知」、ニュートンの「知識は一滴、無知は海」と同じ洞察を、フロイトは無意識研究から確認した。', cats: ['growth', 'mind', 'motivation'], tags: ['無知', '知性', '知らないこと'], likes: 105, season: null, mmdd: null },
+
+  // ── マズロー追加 ──
+  { id: 674, sage: 'maslow', orig: 'In any given moment we have two options: to step forward into growth or to step back into safety.', ja: 'どの瞬間にも二つの選択肢がある。成長へ前進するか、安全へ後退するかだ。', source: 'マズローの言葉', desc: 'マズローの欲求段階説の実践的核心だ。安全欲求（後退）と成長欲求（前進）は常に拮抗している。コンフォートゾーンにとどまることは安全だが成長しない。コンフォートゾーンを出ることは不安だが成長する。この二択は毎日・毎時間・毎瞬間の小さな選択で繰り返されている。今日の選択を振り返ると、あなたはどちらを選んでいることが多いか。', cats: ['growth', 'motivation', 'challenge'], tags: ['成長', '安全', '選択'], likes: 117, season: null, mmdd: null },
+  { id: 675, sage: 'maslow', orig: 'The story of the human race is the story of men and women selling themselves short.', ja: '人類の歴史は、男女が自分を安売りし続ける物語だ。', source: 'マズローの言葉', desc: 'マズローは自己実現した人間を研究しながら、いかに多くの人が自分の可能性を活かしていないかに衝撃を受けた。「selling themselves short（自分を安売りする）」とは自分の能力・価値・可能性を実際より低く評価して生きることだ。能力があるのに挑戦しない、才能があるのに使わない、価値があるのに主張しない。これが人類最大の悲劇だとマズローは言う。', cats: ['motivation', 'growth', 'challenge'], tags: ['自己実現', '可能性', '安売り'], likes: 112, season: null, mmdd: null },
+
+  // ── パスツール追加 ──
+  { id: 676, sage: 'pasteur', orig: 'Science knows no country, because knowledge belongs to humanity, and is the torch which illuminates the world.', ja: '科学は国を知らない。なぜなら知識は人類のものであり、世界を照らす松明だからだ。', source: 'パスツールの言葉', desc: 'パスツールはフランス人として普仏戦争でドイツと敵対する時代にもかかわらず、科学的真理は国境を超えると信じた。ペニシリン・ワクチン・X線。人類の命を救った発見はすべて国籍なく世界中で使われている。科学の成果は人類全体の財産だ。知識を独占しようとする者は世界の光を陰らせる。科学者の最高の使命は人類という大家族への貢献だ。', cats: ['relation', 'motivation', 'work'], tags: ['科学', '人類', '松明'], likes: 101, season: null, mmdd: null },
+
+  // ── ナイチンゲール追加 ──
+  { id: 677, sage: 'nightingale', orig: 'The world is put back by the death of every one who has to sacrifice the development of his or her peculiar gifts to conventionality.', ja: '自分の独自の才能を慣習のために犠牲にしなければならないすべての人の死によって、世界は後退する。', source: 'ナイチンゲールの言葉', desc: 'ナイチンゲール自身が看護師という「女性にふさわしくない職業」へ進むために家族・社会・慣習と戦った。独自の才能を「常識」「慣習」「期待」のために殺すことは、個人の損失だけでなく世界の損失だ。あなたが「向いていないから」「常識ではないから」「期待されていないから」と諦めた才能は何か。その諦めが世界を少しずつ後退させている。', cats: ['motivation', 'growth', 'challenge'], tags: ['才能', '慣習', '世界'], likes: 110, season: null, mmdd: null },
+
+  // ── チューリング追加 ──
+  { id: 678, sage: 'turing', orig: 'If a machine is expected to be infallible, it cannot also be intelligent.', ja: '機械が絶対に誤らないことを期待されるなら、それは知性的であることもできない。', source: 'コンピュータ機械と知性', desc: 'チューリングのこの逆説的な洞察は人工知能と人間知性の本質を同時に示している。誤りを犯さないことは知性の条件ではない。むしろ誤り・試行錯誤・失敗から学ぶ能力が知性の本質だ。完璧な正確さを求める機械より、間違えながら学ぶ知性の方が真に賢い。人間も同様だ。失敗を恐れて挑戦しない「安全な人間」より失敗しながら成長する人間の方が知性的だ。', cats: ['growth', 'work', 'challenge'], tags: ['誤り', '知性', '学習'], likes: 102, season: null, mmdd: null },
+
+  // ── ホーキング追加 ──
+  { id: 679, sage: 'hawking', orig: 'My goal is simple. It is a complete understanding of the universe—why it is as it is and why it exists at all.', ja: '私の目標はシンプルだ。宇宙の完全な理解。なぜそうであるのか、そもそもなぜ存在するのか。', source: 'スティーブン・ホーキングの言葉', desc: 'ホーキングはALSで身体の自由を失いながら人類で最も大きな問いに向き合い続けた。目標のシンプルさと壮大さのギャップが人間の可能性を示す。「宇宙の完全な理解」という不可能に近い目標を掲げることで、毎日の研究に意味が生まれた。目標は達成可能である必要はない。向かい続けることに意味がある目標が、最も人を動かす。', cats: ['motivation', 'work', 'time'], tags: ['目標', '宇宙', '理解'], likes: 113, season: null, mmdd: null },
+
+  // ── ゴルダ・メイア追加 ──
+  { id: 680, sage: 'golda', orig: 'We have always said that in our war with the Arabs we had a secret weapon—no alternative.', ja: 'アラブとの戦争で私たちには秘密兵器があった。それは「他に選択肢がない」ということだ。', source: 'ゴルダ・メイアの言葉', desc: 'イスラエル首相として生存をかけた戦争を指揮したゴルダが語ったこの言葉は深い洞察を持つ。退路を断つことが最大の力を生む。「失敗したら死ぬ」という状況が100%の力を引き出す。コーナーに追い詰められたとき、人間は予想を超える力を発揮する。この洞察は戦争論だけでなく、選択肢を意図的に絞ることで力を集中させるビジネス戦略にも通じる。', cats: ['adversity', 'challenge', 'motivation'], tags: ['選択肢', '秘密兵器', '集中'], likes: 105, season: null, mmdd: null },
+
+  // ── エレノア・ルーズベルト追加 ──
+  { id: 681, sage: 'eleanor', orig: 'The future belongs to those who believe in the beauty of their dreams.', ja: '未来は自分の夢の美しさを信じる者のものだ。', source: 'エレノア・ルーズベルトの言葉', desc: 'エレノアは大恐慌・第二次世界大戦という人類最大の危機の時代に「夢の美しさを信じる」ことを説いた。現実主義が重視される時代ほど、夢の力が必要だ。夢は現実逃避ではなく、まだ存在しない現実への設計図だ。夢の美しさを信じる能力は、その夢に向かって行動し続ける燃料になる。あなたの夢はまだ美しいか。その美しさを信じているか。', cats: ['motivation', 'challenge', 'time'], tags: ['未来', '夢', '信念'], likes: 116, season: null, mmdd: null },
+
+  // ── ビル・ゲイツ追加 ──
+  { id: 682, sage: 'jobs2', orig: 'We always overestimate the change that will occur in the next two years and underestimate the change that will occur in the next ten.', ja: '私たちは次の2年の変化を過大評価し、次の10年の変化を過小評価する。', source: 'ビル・ゲイツの言葉', desc: 'ゲイツはパソコン革命・インターネット革命・スマートフォン革命を近くで見た。短期では過剰な期待が失望を生み、長期では変化の大きさを想像できない。今のAI・遺伝子工学・量子コンピュータも同じパターンをたどっている。10年後の変化を正確に予測した人は少ない。長期的視野と短期的落ち着きのバランスが戦略的思考の核心だ。', cats: ['work', 'time', 'growth'], tags: ['変化', '長期思考', '予測'], likes: 111, season: null, mmdd: null },
+  { id: 683, sage: 'jobs2', orig: 'Your most unhappy customers are your greatest source of learning.', ja: '最も不満を持つ顧客が最大の学習源だ。', source: 'ビジネス＠光速', desc: 'ゲイツはマイクロソフトで顧客からのフィードバックを製品改善の中核に置いた。満足した顧客は何も教えてくれない。しかし不満を持つ顧客は製品の最大の弱点を正確に指摘してくれる。批判は贈り物だ。最も不満を持つ人の声に誠実に向き合う組織・個人が最も速く成長する。あなたに最も厳しい批判をくれる人への態度を振り返ってみよう。', cats: ['work', 'growth', 'relation'], tags: ['顧客', '不満', '学習'], likes: 108, season: null, mmdd: null },
+
+  // ── オプラ追加 ──
+  { id: 684, sage: 'oprah', orig: 'The key to realizing a dream is to focus not on success but significance—and then even the small steps and little victories along your path will take on greater meaning.', ja: '夢を実現する鍵は成功ではなく意義に集中することだ。そうすれば道上の小さな一歩と小さな勝利も大きな意味を持つ。', source: 'オプラ・ウィンフリーの言葉', desc: 'オプラは貧困と虐待から世界最も影響力あるメディア人への旅を「意義」で動機づけていた。「成功」を目標にすると達成しても空虚になることがある。しかし「意義」を目標にすると、最小の進歩も意味を持つ。長い旅の途中で燃え続けるためには、意義という内発的動機が不可欠だ。あなたの夢の「意義」は何か。それは毎日の小さな行動を意味あるものにしているか。', cats: ['motivation', 'work', 'time'], tags: ['意義', '成功', '夢'], likes: 113, season: null, mmdd: null },
+
+  // ── デズモンド・ツツ追加 ──
+  { id: 685, sage: 'mandela2', orig: 'My humanity is bound up in yours, for we can only be human together.', ja: '私の人間性はあなたのものと結びついている。なぜなら私たちは共にしか人間になれないからだ。', source: 'デズモンド・ツツの言葉', desc: '「ウブントゥ（Ubuntu）」というアフリカの哲学の核心だ。「私があるのはあなたたちがいるから」という人間の相互依存の思想だ。個人は孤立して存在できない。共同体の中で、他者との関係の中でのみ、人間は本当の意味で人間になれる。現代の個人主義社会が忘れがちな真実を、ツツはアパルトヘイト後の南アフリカで実践した。', cats: ['relation', 'mind', 'motivation'], tags: ['ウブントゥ', '共に', '人間性'], likes: 114, season: null, mmdd: null },
+
+  // ── シュバイツァー追加 ──
+  { id: 686, sage: 'schweitzer', orig: 'Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.', ja: '成功は幸福の鍵ではない。幸福が成功の鍵だ。やっていることを愛しているなら、成功するだろう。', source: 'アルベルト・シュバイツァーの言葉', desc: 'シュバイツァーは神学・音楽・哲学の博士号を持ちながら30歳から医学を学び直してアフリカで医療奉仕した。それは「成功」のためではなく、使命への愛からだった。使命を愛する者は疲れを知らず、困難を超え、最終的に偉大な成果を残す。成功を追いかけて幸福を後回しにする逆の人生は、成功しても空虚に終わることが多い。', cats: ['motivation', 'work', 'time'], tags: ['幸福', '成功', '愛'], likes: 118, season: null, mmdd: null },
+
+  // ── 勝海舟追加 ──
+  { id: 687, sage: 'katsu', orig: '百術は一誠に如かず。（百の術策も一つの誠実さには及ばない）', ja: '百の術策も一つの誠実さには及ばない。', source: '氷川清話', desc: '勝海舟が生涯で最も重視したのは誠実さだった。西郷隆盛との無血開城交渉も、どんな外交技術より「この人は本物だ」という誠実さの印象が相手の心を動かした。術策・戦略・技術はすべて道具だ。しかしその根底に誠実さがなければ、術策は砂上の楼閣だ。長期的な信頼は誠実さの積み重ねからしか生まれない。', cats: ['relation', 'work', 'mind'], tags: ['誠実', '術策', '信頼'], likes: 109, season: null, mmdd: null },
+
+  // ── ヴィクトル・ユーゴー追加 ──
+  { id: 688, sage: 'hugo', orig: 'Strong and bitter words indicate a weak cause.', ja: '強く苦い言葉は、弱い大義を示す。', source: 'ヴィクトル・ユーゴーの言葉', desc: 'ユーゴーは「レ・ミゼラブル」で法の正義と人間の慈悲の対比を描いた。この言葉はその洞察から来ている。本当に強い主張は穏やかに語れる。怒鳴り・攻撃・感情的な言葉で訴えるのは、論理と証拠が弱い場合が多い。逆に穏やかだが明確な言葉は、根拠の強さを示す。議論・交渉・説得において、声を荒げた瞬間に自分の弱さを示していることに気づいているか。', cats: ['relation', 'work', 'mind'], tags: ['言葉', '弱さ', '大義'], likes: 104, season: null, mmdd: null },
+
+  // ── エラスムス追加 ──
+  { id: 689, sage: 'erasmus', orig: 'The summit of happiness is reached when a person is ready to be what he is.', ja: '幸福の頂点は、人が自分自身であることに準備できたときに達する。', source: 'エラスムスの言葉', desc: 'エラスムスは宗教改革の嵐の中で「カトリックでもプロテスタントでもなく、ただ理性的で誠実なキリスト者でありたい」という自分自身であることを選び続けた。自分以外の何かになろうとすることが最大のエネルギーの浪費だ。自分自身であることへの準備が整ったとき、もはや他者の評価に揺れる必要がなくなり、本当の幸福が訪れる。あなたはどれだけ「自分自身」に準備できているか。', cats: ['mind', 'motivation', 'time'], tags: ['自分自身', '幸福', '準備'], likes: 107, season: null, mmdd: null },
+
+  // ── マルティン・ルター追加 ──
+  { id: 690, sage: 'luther', orig: 'You are not only responsible for what you say, but also for what you do not say.', ja: 'あなたは言ったことに対してだけでなく、言わなかったことに対しても責任がある。', source: 'マルティン・ルターの言葉', desc: 'ルターは「95ヶ条の論題」を公表することで宗教改革の火蓋を切った。それまで多くの人が教会の腐敗を知りながら黙っていた。沈黙は共犯だ。不正義を見て黙ることは不正義への加担だ。「自分には関係ない」「言っても変わらない」という沈黙が世界の問題を永続させる。あなたが今言わずにいることで、誰かが傷ついていないか。', cats: ['challenge', 'relation', 'motivation'], tags: ['沈黙', '責任', '言葉'], likes: 112, season: null, mmdd: null },
 ];
 
 // 季節・日付に関連する名言マッピング（mmdd → quoteId）
