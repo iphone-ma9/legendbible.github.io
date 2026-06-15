@@ -132,6 +132,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  min-height: 100%;
 }
 
 /* PC用中央カラム */
@@ -148,7 +149,9 @@ body {
 /* ── スクロールエリア ── */
 .screen {
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   bottom: calc(var(--tab-h) + var(--safe-b));
   overflow-y: auto;
   overflow-x: hidden;
@@ -1565,7 +1568,9 @@ body {
 
 .tab-bar {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: calc(var(--tab-h) + var(--safe-b));
   padding-bottom: var(--safe-b);
   background: var(--surface);
@@ -6776,31 +6781,25 @@ function clearAllFavs() {
     initSettings();
   });
 }
-// SafariのURLバー対応：dvhで高さを管理、キーボード以外のリサイズは反映
+// ── Safari URLバー対応 ──
+// app-rootの高さをwindow.innerHeightに追従させる
+// （dvhはSafariのURLバー込みの高さになることがあるため）
 (function fixViewport() {
   const root = document.getElementById('app-root');
+  if (!root) return;
 
-  function setHeight() {
-    // dvhが使えれば使う、なければwindow.innerHeight
-    const h = window.innerHeight;
-    root.style.height = h + 'px';
+  function updateHeight() {
+    root.style.height = window.innerHeight + 'px';
   }
 
-  // 初回セット
-  setHeight();
+  updateHeight();
 
-  // SafariのURLバー表示/非表示によるリサイズに追従
-  // ただしキーボード表示（高さ大幅減少）は無視
-  let lastH = window.innerHeight;
-  window.addEventListener('resize', () => {
-    const newH = window.innerHeight;
-    // 高さが増加（URLバーが縮んだ）または小幅の変化は追従
-    // キーボード表示（150px以上の急激な縮小）は無視
-    if (newH > lastH || (lastH - newH) < 150) {
-      lastH = newH;
-      setHeight();
-    }
-  });
+  // SafariのURLバー表示/非表示でinnerHeightが変わるので追従
+  window.addEventListener('resize', updateHeight);
+  // iOS Safariはvisualviewportの変化でURLバーの出入りを検出できる
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateHeight);
+  }
 })();
 
 init();
