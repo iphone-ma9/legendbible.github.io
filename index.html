@@ -2949,18 +2949,21 @@ function sortCats(cats) {
 
 function checkDailyUpdate() {
   const today = new Date().toDateString();
+  const last = localStorage.getItem('nl_last_open');
   localStorage.setItem('nl_last_open', today);
 
-  // テスト用：毎回表示
-  setTimeout(() => {
-    const banner = document.getElementById('daily-banner');
-    if (!banner) return;
-    banner.style.display = 'block';
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      banner.style.transform = 'translateX(-50%) translateY(0)';
-    }));
-    setTimeout(() => closeDailyBanner(), 5000);
-  }, 800);
+  // 前回と日付が異なる場合だけバナーを表示
+  if (last && last !== today) {
+    setTimeout(() => {
+      const banner = document.getElementById('daily-banner');
+      if (!banner) return;
+      banner.style.display = 'block';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        banner.style.transform = 'translateX(-50%) translateY(0)';
+      }));
+      setTimeout(() => closeDailyBanner(), 5000);
+    }, 800);
+  }
 }
 
 function closeDailyBanner() {
@@ -3104,10 +3107,8 @@ function renderTodayCards() {
   const container = document.getElementById('today-scroll');
   const todayQ = getTodayQuotes();
 
-  // セッションごとに順番をシャッフル（日付シードとは別の乱数）
-  const sessionSeed = Date.now() % 10000;
-  const shuffled = [...todayQ].sort(() => Math.random() - 0.5);
-  container.innerHTML = shuffled.map(q => {
+  // 日付シードで順番も固定（毎回同じ並び）
+  container.innerHTML = todayQ.map(q => {
     const sage = SAGES[q.sage];
     const liked = !!likes[q.id];
     const likeCount = (q.likes || 0) + (liked ? 1 : 0);
