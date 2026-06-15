@@ -992,10 +992,10 @@ body {
 
 /* ── 詳細モーダル ── */
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
-  z-index: 200;
+  z-index: 500;
   display: none;
   align-items: flex-end;
 }
@@ -2172,7 +2172,7 @@ body {
 </div>
 
 <!-- 日付更新バナー -->
-<div id="daily-banner" style="display:none;position:absolute;top:0;left:0;right:0;z-index:500;transform:translateY(-100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);">
+<div id="daily-banner" style="display:none;position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);width:100%;max-width:430px;z-index:500;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);">
   <div style="background:#1A3A5C;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
     <div style="flex-shrink:0;display:flex;align-items:center;">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
@@ -4526,7 +4526,90 @@ const QUOTES = [
 
   // ── マルティン・ルター追加 ──
   { id: 690, sage: 'luther', orig: 'You are not only responsible for what you say, but also for what you do not say.', ja: 'あなたは言ったことに対してだけでなく、言わなかったことに対しても責任がある。', source: 'マルティン・ルターの言葉', desc: 'ルターは「95ヶ条の論題」を公表することで宗教改革の火蓋を切った。それまで多くの人が教会の腐敗を知りながら黙っていた。沈黙は共犯だ。不正義を見て黙ることは不正義への加担だ。「自分には関係ない」「言っても変わらない」という沈黙が世界の問題を永続させる。あなたが今言わずにいることで、誰かが傷ついていないか。', cats: ['challenge', 'relation', 'motivation'], tags: ['沈黙', '責任', '言葉'], likes: 112, season: null, mmdd: null },
+
+  // ── ルーミー追加 ──
+  { id: 691, sage: 'rumi', orig: 'Let the beauty we love be what we do. There are hundreds of ways to kneel and kiss the ground.', ja: '私たちが愛する美しさを行動にしよう。地にひれ伏してキスをする方法は何百もある。', source: 'ルーミーの詩', desc: 'ルーミーはスーフィー神秘主義の詩人として神への愛を詩で表現し続けた。「神への礼拝の方法は一つではない」という寛容の思想が込められている。どんな仕事・芸術・봉仕・愛情表現も、それが真心から来るなら同等に尊い。あなたが美しいと感じるものを行動に変えること。それがどんな形であれ、それは祈りだ。', cats: ['motivation', 'relation', 'mind'], tags: ['美', '行動', '礼拝'], likes: 108, season: null, mmdd: null },
+  { id: 692, sage: 'rumi', orig: 'Sell your cleverness and buy bewilderment.', ja: '賢さを売り、驚嘆を買え。', source: 'ルーミーの詩', desc: 'ルーミーのスーフィー哲学では「知らないこと」が最高の知恵だ。賢さとは答えを持つことだが、驚嘆とは問いを持つことだ。子供のように世界に驚き続けること。「わかった」という感覚が探求を止める。「不思議だ」という感覚が探求を続けさせる。賢くあろうとする执着を手放したとき、宇宙の深さに本当に触れられる。', cats: ['growth', 'mind', 'motivation'], tags: ['驚嘆', '知恵', '探求'], likes: 103, season: null, mmdd: null },
+
+  // ── タゴール追加 ──
+  { id: 693, sage: 'tagore', orig: 'Faith is the bird that feels the light when the dawn is still dark.', ja: '信仰とは夜明けがまだ暗いうちに光を感じる鳥だ。', source: 'タゴールの詩', desc: 'タゴールはインド独立前の暗い時代に希望と信仰の詩を書き続けた。夜明け前が最も暗い。しかし鳥は夜明けの光をまだ暗いうちに感じ取り、歌い始める。信仰とは証拠が揃う前に真実を感じ取る感受性だ。今あなたが向き合っている最も暗い状況は、実は夜明けの直前かもしれない。その光をまだ見えなくても感じ取れるか。', cats: ['adversity', 'motivation', 'mind'], tags: ['信仰', '夜明け', '希望'], likes: 114, season: null, mmdd: null },
+
+  // ── ミケランジェロ追加 ──
+  { id: 694, sage: 'michelangelo', orig: 'Lord, grant that I may always desire more than I can accomplish.', ja: '神よ、私が成し遂げられる以上のことを常に望む心を与えてください。', source: 'ミケランジェロの言葉', desc: 'ミケランジェロは87歳まで創作を続けながら「まだ学んでいる」と語った。達成可能な目標は成長を止める。届かない目標が人間を永続的に成長させる。ミケランジェロにとってシスティーナ礼拝堂も「達成」ではなく「途中」だった。神に「もっと望む心を」と祈ることは、生涯成長し続ける覚悟の宣言だ。', cats: ['motivation', 'growth', 'challenge'], tags: ['欲求', '成長', '創造'], likes: 109, season: null, mmdd: null },
+
+  // ── ガウディ追加 ──
+  { id: 695, sage: 'gaudi', orig: 'The straight line belongs to men, the curved line belongs to God.', ja: '直線は人間のものだ。曲線は神のものだ。', source: 'ガウディの言葉', desc: 'ガウディの建築に直線はほとんど存在しない。自然界に純粋な直線はない。葉脈・骨格・貝殻・山の輪郭。すべて曲線だ。人間が作る直線は効率的だが生命感がない。神（自然）が作る曲線は複雑だが美しく強い。ガウディはこの観察からサグラダ・ファミリアという生命体のような建築を生み出した。効率より美しさを、直線より曲線を選ぶ哲学だ。', cats: ['work', 'mind', 'growth'], tags: ['曲線', '自然', '神'], likes: 105, season: null, mmdd: null },
+
+  // ── ドストエフスキー追加 ──
+  { id: 696, sage: 'dostoevsky', orig: 'Love in action is a harsh and dreadful thing compared with love in dreams.', ja: '行動における愛は夢の中の愛に比べて過酷で恐ろしいものだ。', source: 'カラマーゾフの兄弟', desc: 'ドストエフスキーはゾシマ長老を通じて愛の本質を示した。「人類を愛する」という抽象的な愛は美しい。しかし目の前の一人の人間を、その臭い・弱さ・醜さも含めて愛することは全く別の次元の困難さだ。愛は感情ではなく行動だ。感情としての愛は夢想で終わる。行動としての愛は日々の選択と忍耐から生まれる。', cats: ['relation', 'motivation', 'adversity'], tags: ['愛', '行動', '困難'], likes: 113, season: null, mmdd: null },
+  { id: 697, sage: 'dostoevsky', orig: 'The soul is healed by being with children.', ja: '魂は子供と共にいることで癒される。', source: 'ドストエフスキーの言葉', desc: 'ドストエフスキーは生涯を通じて罪・苦しみ・信仰の問題と格闘した。しかし子供の純粋さには特別な癒しの力があると確信していた。「カラマーゾフの兄弟」でアリョーシャが子供たちと共にいる場面は最も輝く。子供の無邪気さ・好奇心・笑い。それは大人が失った何かを持っている。あなたの周りの子供から、今日何かを受け取ったか。', cats: ['relation', 'mind', 'time'], tags: ['子供', '癒し', '純粋'], likes: 104, season: null, mmdd: null },
+
+  // ── アレクサンドロス大王追加 ──
+  { id: 698, sage: 'alexander', orig: 'Upon the conduct of each depends the fate of all.', ja: '一人一人の行動の上に、すべての者の運命がかかっている。', source: 'アレクサンドロスの言葉', desc: 'アレクサンドロスは10万を超える軍を率いながら、一人の兵士の行動が全体の命運を左右するという現実を知っていた。チームの最も弱い部分が全体の強さを決める。個人の行動責任と集団の連帯責任が一致するとき、組織は最も強くなる。あなたの今日の一つの行動が、あなたの周りの人々の運命に影響を与えている。', cats: ['work', 'relation', 'motivation'], tags: ['責任', '連帯', '運命'], likes: 101, season: null, mmdd: null },
+
+  // ── クレオパトラ追加 ──
+  { id: 699, sage: 'cleopatra', orig: 'In praising Antony, I have dispraised Caesar.', ja: 'アントニウスを称えることで、私はカエサルを貶めてしまった。', source: 'シェイクスピア「アントニーとクレオパトラ」（歴史的言葉より）', desc: 'クレオパトラは政治的な言葉の力と危険さを熟知していた。9か国語を話す知識人として、言葉一つが政治的状況を変えることを体験していた。褒めることと貶めることは同じコインの裏表だ。誰かを称えることは誰かとの比較を生む。言葉の意図せぬ影響力を意識することが、真の言語の使い手の条件だ。', cats: ['work', 'relation', 'mind'], tags: ['言葉', '政治', '影響'], likes: 88, season: null, mmdd: null },
+
+  // ── スーザン・B・アンソニー追加 ──
+  { id: 700, sage: 'anthonysusan', orig: 'I distrust those people who know so well what God wants them to do, because I notice it always coincides with their own desires.', ja: '神が何を望むかをよく知っている人を私は信用しない。それが常にその人自身の欲望と一致していることに気づくからだ。', source: 'スーザン・B・アンソニーの言葉', desc: 'アンソニーは宗教的権威を使って女性を抑圧する論理への鋭い批判を語った。「神の意志」「自然の摂理」「伝統」という言葉で自分の欲望や偏見を正当化することへの警告だ。本当に正しいことは権威によって決まるのではなく、誰もが平等に尊重されるかで判断される。権威の言葉を聞くとき、その人の「欲望」が何かを同時に問うことが批判的思考だ。', cats: ['mind', 'challenge', 'relation'], tags: ['権威', '欲望', '批判的思考'], likes: 96, season: null, mmdd: null },
+
+  // ── ウィトゲンシュタイン追加 ──
+  { id: 701, sage: 'wittgenstein', orig: 'A new word is like a fresh seed sown on the ground of the discussion.', ja: '新しい言葉は議論の土地に蒔かれた新鮮な種のようなものだ。', source: '文化と価値', desc: 'ウィトゲンシュタインは言語が思考の限界を決めると考えた。新しい言葉を学ぶことは思考に新しい可能性の種を蒔くことだ。「シャーデンフロイデ（他者の不幸を喜ぶ感情）」「もののあわれ」「フィンデ・シエクル（世紀末感覚）」。これらの言葉を知ることで、それまで感じていながら言語化できなかった体験に輪郭が与えられる。語彙は思考の解像度だ。', cats: ['growth', 'mind', 'work'], tags: ['言語', '種', '思考'], likes: 96, season: null, mmdd: null },
+
+  // ── 吉田松陰追加 ──
+  { id: 702, sage: 'yoshida', orig: '親思う心にまさる親心 けふのおとずれ何ときくらん', ja: '子が親を思う心よりも、親が子を思う心の方が深い。今日の知らせ（死刑）を聞いてどれほど悲しむだろうか。', source: '吉田松陰の辞世の句', desc: '松陰が処刑される前に両親を思って詠んだ歌だ。自分の死への恐れではなく、両親の悲しみを心配している。この利他の心が松陰を偉大にした。自分が傷つくことより、自分のせいで他者が悲しむことを恐れる。この感受性が弟子たちの心を動かし、明治維新という歴史的変革につながった。', cats: ['relation', 'adversity', 'motivation'], tags: ['親心', '利他', '辞世'], likes: 111, season: null, mmdd: null },
+
+  // ── 一休宗純追加 ──
+  { id: 703, sage: 'ikkyu', orig: '正月や冥土の旅の一里塚 めでたくもありめでたくもなし', ja: 'お正月も死への旅の一里塚。めでたくもありめでたくもない。', source: '一休の狂歌', desc: '一休は骸骨を竿に掲げて正月の町を歩いたとされる。死を直視することで今この瞬間の命の価値を高めることが一休の禅の実践だった。おめでとうと言い合う正月に「また死に近づいた」と言うのは絶望ではなく、だからこそ今日を大切にしろというメッセージだ。死の意識が生の充実を生む逆説は禅の核心だ。', cats: ['time', 'mind', 'motivation'], tags: ['正月', '死', '禅'], likes: 99, season: null, mmdd: null },
+
+  // ── 松尾芭蕉追加 ──
+  { id: 704, sage: 'basho', orig: 'どこへ行っても旅人。これが私の人生だ。', ja: 'どこへ行っても旅人。これが私の人生だ。', source: '奥の細道', desc: '芭蕉は51年の生涯の後半を旅に費やした。江戸という定住の場を捨て、常に旅人として生きることを選んだ。「旅人」とは場所を移動する人だけでなく、どこにいても「仮の宿」として物事に執着しない心の在り方だ。場所への執着・所有への执着・役割への執着を手放し、常に新鮮な目で世界を見る。それが芭蕉の俳句の命の源だった。', cats: ['time', 'mind', 'growth'], tags: ['旅人', '無執着', '芭蕉'], likes: 102, season: null, mmdd: null },
+
+  // ── ウルストンクラフト追加 ──
+  { id: 705, sage: 'wollstonecraft', orig: 'Strengthen the female mind by enlarging it, and there will be an end to blind obedience.', ja: '女性の心を広げることで強くせよ。そうすれば盲目的な従順さは終わる。', source: '女性の権利の擁護', desc: '1792年にウルストンクラフトが書いたこの言葉は230年後の今も有効だ。教育を与えず従順さを要求することは、知性の抑圧で服従を強制することだ。しかし教育によって知性が開かれた人間は盲目的に従わない。考え、問い、判断する。これは女性だけの問題ではなく、すべての権力構造に当てはまる洞察だ。教育とは自由への投資だ。', cats: ['challenge', 'growth', 'motivation'], tags: ['教育', '自由', '知性'], likes: 105, season: null, mmdd: null },
+
+  // ── ハリエット・タブマン追加 ──
+  { id: 706, sage: 'harriet', orig: 'I was the conductor of the Underground Railroad for eight years, and I can say what most conductors can\'t say—I never ran my train off the track and I never lost a passenger.', ja: '私は8年間地下鉄道の車掌だった。そして多くの車掌が言えないことを言える。脱線したことも、乗客を失ったことも一度もない。', source: 'ハリエット・タブマンの言葉', desc: '70人以上の奴隷を自由へ導いたタブマンの誇りと確信が込められた言葉だ。「神が私に任務を与えた。だから私は失敗しない」という信念が支えだった。不可能に見えることも、それが自分の使命だと確信したとき、人間は想像を超える能力を発揮する。あなたの「一度も失わなかった乗客」は何か。あなたが守り続けているものは何か。', cats: ['motivation', 'adversity', 'challenge'], tags: ['使命', '確信', '達成'], likes: 112, season: null, mmdd: null },
+
+  // ── インディラ・ガンジー追加 ──
+  { id: 707, sage: 'indira', orig: 'My grandfather once told me that there were two kinds of people: those who do the work and those who take the credit. He told me to try to be in the first group; there was much less competition there.', ja: '祖父はかつて二種類の人間がいると言った。仕事をする人と手柄を取る人だ。最初のグループにいなさいと言った。競争が遥かに少ないから。', source: 'インディラ・ガンジーの言葉', desc: 'インディラの祖父はネルー首相だ。仕事の実績より自己宣伝が評価されがちな世界への皮肉と洞察だ。本当に仕事をする人は少ない。手柄を主張する人は多い。しかし最終的に組織・社会・歴史を動かすのは実際に仕事をした人だ。今日あなたは「仕事をする人」か「手柄を取る人」か。', cats: ['work', 'motivation', 'mind'], tags: ['仕事', '手柄', '実践'], likes: 118, season: null, mmdd: null },
+
+  // ── エリザベス・ブラックウェル追加 ──
+  { id: 708, sage: 'nightingale2', orig: 'If society will not admit of woman\'s free development, then society must be remodelled.', ja: '社会が女性の自由な発展を認めないなら、社会を作り直さなければならない。', source: 'エリザベス・ブラックウェルの言葉', desc: 'ブラックウェルは29校の医科大学から拒否され、唯一受け入れた小さな大学でも女性であることを理由に屈辱を受けた。しかし彼女は個人として適応するのではなく社会を変えることを選んだ。現在の状況に自分を合わせることと、状況を変えることは全く別の選択だ。ブラックウェルが社会を作り直すことを選んだことで、後の数百万人の女性医師への道が開かれた。', cats: ['challenge', 'motivation', 'relation'], tags: ['社会変革', '発展', '先駆者'], likes: 107, season: null, mmdd: null },
+
+  // ── RBG追加 ──
+  { id: 709, sage: 'schweitzer2', orig: 'Women belong in all places where decisions are being made.', ja: '女性はすべての意思決定の場に属する。', source: 'ルース・ベイダー・ギンズバーグの言葉', desc: 'RBGは最高裁判事として女性・少数者・弱者の権利を守り続けた。「いつ十分な女性の判事が最高裁にいると思いますか？」と聞かれ「9人全員が女性のとき」と答えたことは有名だ。9人全員が男性だったとき誰も「多すぎる」とは言わなかった。意思決定の場への平等な参加は人権の問題だ。多様な視点が最良の決定を生む。', cats: ['challenge', 'relation', 'motivation'], tags: ['意思決定', '女性', '多様性'], likes: 115, season: null, mmdd: null },
+
+  // ── アウグスティヌス追加 ──
+  { id: 710, sage: 'teresa4', orig: 'Thou madest us for Thyself, and our heart is restless, until it repose in Thee.', ja: 'あなたは私たちをあなたのために作られた。そして私たちの心はあなたの中に安らぐまで落ち着かない。', source: '告白録 第1巻第1章', desc: 'アウグスティヌスが若い頃、哲学・快楽・権力・名声のすべてを試しながら満たされなかった経験から生まれた言葉だ。人間の内側にある根本的な渇望はどんな物質・成功・人間関係でも完全には満たされない。その渇望こそが人間を最も深いものへと向かわせる力だ。あなたが感じている「まだ足りない」という感覚は、もっと深いものへの招待かもしれない。', cats: ['mind', 'motivation', 'time'], tags: ['渇望', '魂', '安らぎ'], likes: 106, season: null, mmdd: null },
+  { id: 711, sage: 'teresa4', orig: 'Our heart is restless until it rests in you.', ja: 'To love beauty is to see light.', source: '告白録', desc: 'アウグスティヌスは「告白録」で自らの放蕩な生活・知的遍歴・回心の過程を赤裸々に記した。西洋文学初の本格的な自伝として、自己開示という行為に宗教的・文学的意味を与えた。自分の弱さ・罪・迷いを正直に書くことで、同じ弱さを持つ後世の読者の魂に触れた。完璧な人間の語る言葉より、弱さを認めた人間の言葉の方が深く届く。', cats: ['mind', 'adversity', 'relation'], tags: ['告白', '弱さ', '誠実'], likes: 89, season: null, mmdd: null },
+
+  // ── 日蓮追加 ──
+  { id: 712, sage: 'nichiren', orig: '濁水を清めれば清水となる。煩悩の薪を燃やせば菩提の炎となる。', ja: '濁った水を清めれば清水になる。煩悩という薪を燃やせば悟りの炎となる。', source: '日蓮の言葉', desc: '日蓮は煩悩（欲望・怒り・迷い）を否定するのではなく、それを悟りのエネルギーに転換することを説いた。濁った水が清水になるように、人間の弱さ・欲望・怒りは悟りへの道の素材になる。問題は煩悩があることではなく、それをどう使うかだ。あなたの最大の弱点は、見方を変えれば最大の力の源かもしれない。', cats: ['adversity', 'growth', 'mind'], tags: ['煩悩', '転換', '菩提'], likes: 98, season: null, mmdd: null },
+  { id: 713, sage: 'nichiren', orig: '法華経の行者は必ず三障四魔に遭遇する。障魔がなければ法華経の行者ではない。', ja: '信念ある者には必ず試練が来る。試練がなければ本物の信念ではない。', source: '日蓮の言葉', desc: '日蓮は佐渡流刑・竜口法難という死の危機を何度も乗り越えた。その経験から「本物の信念は試練によって証明される」という確信を持った。逆境がないということは、まだ本気でないということかもしれない。あなたが真剣に向かっている道に障害があるなら、それはあなたの方向が正しいサインかもしれない。', cats: ['adversity', 'challenge', 'motivation'], tags: ['試練', '信念', '証明'], likes: 102, season: null, mmdd: null },
+
+  // ── 空海追加 ──
+  { id: 714, sage: 'kukai', orig: '密厳国土は穢土にあらず、娑婆世界は真如の顕れ。', ja: 'この世界は汚れた場所ではない。日常のすべてが真理の現れだ。', source: '即身成仏義', desc: '空海の密教では「この世界そのものが仏の世界だ」という思想がある。特別な場所・特別な状態・特別な修行でなく、今ここの日常が仏法の現れだ。食事も仕事も対話も、すべてが修行だ。これは道元の「而今の山水」、禅の「日常是道場」と同じ洞察だ。特別な状況を待つのではなく今ここをそのまま道場とすること。', cats: ['mind', 'time', 'work'], tags: ['日常', '道場', '密教'], likes: 95, season: null, mmdd: null },
+
+  // ── 千利休追加 ──
+  { id: 715, sage: 'rikyu', orig: '茶の湯とは ただ湯をわかし 茶をたてて 飲むばかりなることと 知るべし', ja: '茶の湯とはただお湯を沸かして茶を点てて飲むだけのことだと知るべきだ。', source: '利休百首', desc: '利休の最も有名な教えだ。複雑な作法・高価な道具・格式の高さ。これらはすべて本質ではない。本質は「お湯を沸かして茶を飲む」というシンプルな行為だ。その最もシンプルな行為に全力の心を込めること。これがわびの精神だ。どんな仕事も複雑な手順の前に「本質は何か」を問うことが利休から学べる最大の教訓だ。', cats: ['work', 'mind', 'motivation'], tags: ['本質', 'シンプル', '茶道'], likes: 112, season: null, mmdd: null },
+
+  // ── ミース・ファン・デル・ローエ追加 ──
+  { id: 716, sage: 'mies', orig: 'God is in the details.', ja: '神は細部に宿る。', source: 'ミースの言葉', desc: 'ミースが好んで使ったとされるこの言葉は建築だけでなくすべての創造に当てはまる。シーグラムビルの成功はシンプルに見えながら細部の素材・比率・接合部が極限まで洗練されているからだ。大きなビジョンは重要だが、最終的な仕上がりを決めるのは細部への注意だ。「だいたいで良い」という姿勢が作品の質を決定する。神は大きな構造ではなく細部の完成度に現れる。', cats: ['work', 'growth', 'mind'], tags: ['細部', '完成度', '建築'], likes: 111, season: null, mmdd: null },
+  { id: 717, sage: 'mies', orig: 'Less is more.', ja: '少ないことは豊かなことだ。', source: 'ミースの言葉', desc: 'ミースの建築哲学の核心を三語に凝縮した言葉だ。余分なものを排除することで本質が現れる。装飾・説明・言い訳・複雑さ。これらを取り除いたとき、本当に伝えたいことが純粋に輝く。現代のデザイン・UI・ライティング・コミュニケーションすべてに通じる原則だ。ジョブズはこの哲学をアップルの製品に応用した。あなたの仕事から何かを取り除けば豊かになるか。', cats: ['work', 'mind', 'growth'], tags: ['Less is more', 'シンプル', 'デザイン'], likes: 119, season: null, mmdd: null },
+
+  // ── ル・コルビュジエ追加 ──
+  { id: 718, sage: 'lecorbusier', orig: 'Architecture is the learned game, correct and magnificent, of forms assembled in the light.', ja: '建築とは光の中で組み合わされた形の、学ばれた・正確で・壮大なゲームだ。', source: '建築をめざして', desc: 'コルビュジエはこの定義で建築の本質を示した。光と形の組み合わせというゲーム。この「ゲーム」という言葉が重要だ。真剣でありながら喜びがある。規則があるが無限の可能性がある。建築だけでなくすべての創造はこの「学ばれた・正確で・壮大なゲーム」だ。あなたの仕事はゲームとして楽しめているか。', cats: ['work', 'motivation', 'mind'], tags: ['光', '形', 'ゲーム'], likes: 93, season: null, mmdd: null },
+
+  // ── ウォルト・ディズニー追加 ──
+  { id: 719, sage: 'disney', orig: 'It\'s kind of fun to do the impossible.', ja: '不可能なことをするのはちょっと楽しい。', source: 'ウォルト・ディズニーの言葉', desc: 'ディズニーはアニメーション・テーマパーク・映像技術において何度も「不可能」と言われたことを実現した。「不可能」という言葉を聞いたとき、多くの人は諦める。しかしディズニーは「ちょっと楽しそう」と感じた。不可能への取り組みには通常の問題解決では得られない創造力・協力・突破口が生まれる。不可能に挑むことの副産物として、思いがけない発見と喜びが生まれる。', cats: ['challenge', 'motivation', 'work'], tags: ['不可能', '楽しい', '挑戦'], likes: 117, season: null, mmdd: null },
+  { id: 720, sage: 'disney', orig: 'Laughter is timeless, imagination has no age, dreams are forever.', ja: '笑いは時を超え、想像力に年齢はなく、夢は永遠だ。', source: 'ウォルト・ディズニーの言葉', desc: 'ディズニーが伝えようとしたのは子供だけでなく、大人の中の子供への贈り物だった。年を取ると「現実的であれ」という声に押されて想像力・笑い・夢を手放していく。しかしこれらは年齢とともに失われるものではなく、意識的に守らなければ奪われるものだ。あなたの中の子供はまだ生きているか。最後に声を上げて笑ったのはいつか。', cats: ['motivation', 'time', 'mind'], tags: ['笑い', '想像力', '夢'], likes: 113, season: null, mmdd: null },
+
+  // ── ヘレン・ケラー追加 ──
+  { id: 721, sage: 'helenkeller', orig: 'The best and most beautiful things in the world cannot be seen or even touched—they must be felt with the heart.', ja: '世界で最も良く最も美しいものは、見えも触れもできない。心で感じなければならない。', source: 'ヘレン・ケラーの言葉', desc: 'ヘレンは視覚も聴覚もない世界で生きながら、人間にとって最も重要なものが感覚器官を超えたところにあることを体験した。愛・友情・希望・信仰・意味。これらは目で見えず耳で聞こえない。しかし最も確実に存在する。感覚が豊かな私たちが、感覚で捉えられないものをどれほど感じているか。', cats: ['relation', 'mind', 'motivation'], tags: ['心', '美しさ', '感じる'], likes: 118, season: null, mmdd: null },
+  { id: 722, sage: 'helenkeller', orig: 'Alone we can do so little; together we can do so much.', ja: '一人ではほとんどできない。一緒なら多くのことができる。', source: 'ヘレン・ケラーの言葉', desc: 'ヘレンはサリバン先生という「一緒にいてくれる人」なしには今日知られるヘレン・ケラーにはなれなかった。彼女の業績は「一人の天才」ではなく「二人の協力」の産物だ。孤独に頑張ることを美徳とする文化の中で、助けを求めること・共に歩むことの力を忘れがちだ。あなたの夢を一人で抱えているなら、信頼できる誰かと分かち合ってみよう。', cats: ['relation', 'motivation', 'challenge'], tags: ['協力', '共に', '可能性'], likes: 111, season: null, mmdd: null },
 ];
+
 
 // 季節・日付に関連する名言マッピング（mmdd → quoteId）
 // 実際は全件対応させていくが、プロトでは今日の日付に5件をランダム表示
@@ -4898,7 +4981,7 @@ function checkDailyUpdate() {
     if (!banner) return;
     banner.style.display = 'block';
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      banner.style.transform = 'translateY(0)';
+      banner.style.transform = 'translateX(-50%) translateY(0)';
     }));
     setTimeout(() => closeDailyBanner(), 5000);
   }, 800);
@@ -4907,7 +4990,7 @@ function checkDailyUpdate() {
 function closeDailyBanner() {
   const banner = document.getElementById('daily-banner');
   if (!banner) return;
-  banner.style.transform = 'translateY(-100%)';
+  banner.style.transform = 'translateX(-50%) translateY(-100%)';
   setTimeout(() => { banner.style.display = 'none'; }, 400);
 }
 
@@ -5474,7 +5557,7 @@ function openCatScreen(catId, title) {
     document.getElementById('tab-'+t)?.classList.remove('active');
   });
   document.getElementById('screen-cat').classList.add('active');
-  document.getElementById('screen-cat').scrollTop = 0;
+  window.scrollTo(0, 0);
 }
 
 function renderCatQuotes() {
@@ -6021,9 +6104,11 @@ function initModalHandle() {
 }
 
 function openModal(id) {
+  try {
   const q = QUOTES.find(q => q.id === id);
-  if (!q) return;
+  if (!q) { console.error('Quote not found: id=' + id); return; }
   const sage = SAGES[q.sage];
+  if (!sage) { console.error('Sage not found: sage=' + q.sage + ' id=' + id); return; }
   const liked = likes[id] ? true : false;
   const likeCount = (q.likes||0) + (liked?1:0);
 
@@ -6100,6 +6185,10 @@ function openModal(id) {
     sheet.style.transform = '';
     sheet.style.overflowY = '';
   }
+  } catch(err) {
+    console.error('openModal error id=' + id + ':', err.message, err.stack);
+    alert('エラー: ' + err.message + '\nid=' + id);
+  }
 }
 
 function closeModal(e) {
@@ -6121,6 +6210,12 @@ function closeModal(e) {
 // タブ切り替え
 // ══════════════════════════════════════
 function switchTab(tab) {
+  // モーダル・オーバーレイを強制クローズ
+  const modal = document.getElementById('modal');
+  if (modal) { modal.classList.remove('open'); }
+  const sageFilter = document.getElementById('sage-filter-overlay');
+  if (sageFilter) { sageFilter.style.display = 'none'; }
+
   const screens = ['home','search','fav','history','settings','cat','privacy','terms','about','sage','diagnosis'];
   screens.forEach(s => document.getElementById('screen-'+s)?.classList.remove('active'));
   const tabs = ['home','search','diagnosis','fav','settings'];
@@ -6161,6 +6256,8 @@ function switchTab(tab) {
     const activeHistLayout = document.getElementById(`hist-layout-btn-${histLayout}`);
     if (activeHistLayout) activeHistLayout.classList.add('active');
   }
+  // タブ切り替え時にページ先頭へスクロール
+  window.scrollTo(0, 0);
 }
 
 // ══════════════════════════════════════
@@ -6174,8 +6271,7 @@ function jumpToSearch(tag) {
   renderSearchCatFilter();
   doSearch();
   // スクロール位置をトップにリセット
-  const screen = document.getElementById('screen-search');
-  if (screen) screen.scrollTop = 0;
+  window.scrollTo(0, 0);
 }
 function jumpToCategory(catId) {
   // ホームタブに切り替え
