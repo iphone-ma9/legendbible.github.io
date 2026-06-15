@@ -3794,17 +3794,15 @@ function doSearch(direction = 'none') {
   const catList = _searchCatList();
   const idx = catList.indexOf(searchCatFilter);
 
-  // 現在のスライドはフル生成、prev/nextは軽量版（30件）でメモリ節約
+  // まず現在のスライドだけ即座に生成（スムーズに見せる）
   const currData = _buildSearchSlide(searchCatFilter);
   curr.innerHTML = currData.html;
-  prev.innerHTML = idx > 0 ? _buildSearchSlide(catList[idx - 1], 30).html : '';
-  next.innerHTML = idx < catList.length - 1 ? _buildSearchSlide(catList[idx + 1], 30).html : '';
 
-  // 結果バー・件数
+  // 結果バー・件数を更新
   if (sortBar) sortBar.style.display = 'flex';
   if (countEl) countEl.textContent = `${currData.count}件`;
 
-  // アニメーション（トップのrenderCatQuotesHomeと同じ）
+  // アニメーション
   if (direction === 'none') {
     track.style.transition = 'none';
     track.style.transform = 'translateX(-33.333%)';
@@ -3822,6 +3820,18 @@ function doSearch(direction = 'none') {
       track.style.transition = 'transform 0.3s ease-out';
       track.style.transform = 'translateX(0%)';
     }));
+  }
+
+  // prev/nextはアニメーション完了後に非同期で生成（スワイプの重さ解消）
+  const buildNeighbors = () => {
+    if (prev) prev.innerHTML = idx > 0 ? _buildSearchSlide(catList[idx - 1], 30).html : '';
+    if (next) next.innerHTML = idx < catList.length - 1 ? _buildSearchSlide(catList[idx + 1], 30).html : '';
+  };
+  // requestIdleCallbackが使えればアイドル時に、なければ350ms後に実行
+  if (window.requestIdleCallback) {
+    requestIdleCallback(buildNeighbors, { timeout: 500 });
+  } else {
+    setTimeout(buildNeighbors, 350);
   }
 }
 
