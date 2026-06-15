@@ -119,16 +119,17 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body {
+html {
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 body {
   font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
   background: #E8E8E8;
   color: var(--text1);
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -140,19 +141,17 @@ body {
   flex-direction: column;
   width: 100%;
   max-width: 430px;
-  height: 100dvh;
+  min-height: 100dvh;
   background: var(--bg);
   box-shadow: 0 0 40px rgba(0,0,0,0.15);
-  overflow: hidden;
 }
 
 /* ── スクロールエリア ── */
 .screen {
   display: none;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  padding-bottom: calc(var(--tab-h) + var(--safe-b));
 }
 .screen.active {
   display: block;
@@ -1565,8 +1564,12 @@ body {
 .sage-profile-arrow { color: var(--text3); font-size: 16px; flex-shrink: 0; }
 
 .tab-bar {
-  flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 430px;
   height: calc(var(--tab-h) + var(--safe-b));
   padding-bottom: var(--safe-b);
   background: var(--surface);
