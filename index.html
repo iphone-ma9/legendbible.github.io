@@ -3712,8 +3712,9 @@ function _buildSearchSlide(catId, limit = 100) {
     }
     return { html, count: 0 };
   }
-  // 表示上限：メモリ節約のため最大limit件
-  const LIMIT = limit;
+  // 表示上限：レイアウトによって件数を変える
+  // グリッド（2列）は軽いので多め、リスト（1列）は重いので少なめ
+  const LIMIT = limit !== 100 ? limit : (searchLayout === 'grid' ? 100 : 30);
   const totalCount = filtered.length;
   const limited = filtered.slice(0, LIMIT);
   const moreHtml = totalCount > LIMIT
