@@ -1862,11 +1862,7 @@ body {
     </div>
   </div>
   <div class="cat-slider" id="search-slider">
-    <div class="cat-slider-track" id="search-slider-track">
-      <div class="cat-slide" id="search-slide-prev"></div>
-      <div class="cat-slide" id="search-slide-curr"></div>
-      <div class="cat-slide" id="search-slide-next"></div>
-    </div>
+    <div id="search-content" style="padding:16px 20px 20px;"></div>
   </div>
   <div id="search-results" style="display:none"></div>
 </div>
@@ -3374,79 +3370,33 @@ function setupCatSwipe(area) {}
 function initSearchSwipe() {
   const slider = document.getElementById('search-slider');
   if (!slider) return;
-  let startX = 0, startY = 0, currentX = 0;
-  let isDragging = false, isScrolling = false, rafId = null;
+  let startX = 0, startY = 0, moved = false;
 
   slider.addEventListener('touchstart', e => {
-    const t = e.touches[0];
-    startX = t.clientX;
-    startY = t.clientY;
-    currentX = 0;
-    isDragging = false;
-    isScrolling = false;
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-
-    const track = _getSearchTrack();
-    if (track) {
-      track.style.transition = 'none';
-      // GPU層を確保
-      track.style.transform = track.style.transform || 'translateX(-33.333%)';
-    }
-
-    // タッチ開始時にprev/nextを事前生成
-    const catList = _searchCatList();
-    const idx = catList.indexOf(searchCatFilter);
-    const prev = _getSearchSlide('prev');
-    const next = _getSearchSlide('next');
-    if (prev && !prev.innerHTML && idx > 0)
-      prev.innerHTML = _buildSearchSlide(catList[idx - 1], 40).html;
-    if (next && !next.innerHTML && idx < catList.length - 1)
-      next.innerHTML = _buildSearchSlide(catList[idx + 1], 40).html;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    moved = false;
   }, { passive: true });
 
   slider.addEventListener('touchmove', e => {
-    if (isScrolling) return;
-    const dx = e.touches[0].clientX - startX;
-    const dy = e.touches[0].clientY - startY;
-
-    if (!isDragging) {
-      if (Math.abs(dy) > Math.abs(dx) + 3) { isScrolling = true; return; }
-      if (Math.abs(dx) < 8) return;
-      isDragging = true;
-    }
-
-    // passive:trueのままなのでpreventDefaultは呼べないが
-    // isDragging確定後はrAFでtransformだけ更新（描画ブロックなし）
-    currentX = dx;
-    const w = slider.offsetWidth;
-    const newX = -w + dx;
-    if (rafId) cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(() => {
-      const track = _getSearchTrack();
-      if (track) track.style.transform = `translateX(${newX}px)`;
-      rafId = null;
-    });
+    moved = true;
   }, { passive: true });
 
-  slider.addEventListener('touchend', () => {
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    if (!isDragging) return;
-    isDragging = false;
-    isScrolling = false;
+  slider.addEventListener('touchend', e => {
+    if (!moved) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    // 縦移動が大きければ無視
+    if (Math.abs(dy) > Math.abs(dx)) return;
+    // 横移動が小さければ無視
+    if (Math.abs(dx) < 40) return;
 
-    const track = _getSearchTrack();
-    const w = slider.offsetWidth;
     const catList = _searchCatList();
     const idx = catList.indexOf(searchCatFilter);
-
-    if (currentX < -40 && idx < catList.length - 1) {
-      if (track) { track.style.transition = 'transform 0.25s ease-out'; track.style.transform = `translateX(${-w * 2}px)`; }
-      setTimeout(() => swipeSearchCat(catList[idx + 1], 'none'), 250);
-    } else if (currentX > 40 && idx > 0) {
-      if (track) { track.style.transition = 'transform 0.25s ease-out'; track.style.transform = 'translateX(0px)'; }
-      setTimeout(() => swipeSearchCat(catList[idx - 1], 'none'), 250);
-    } else {
-      if (track) { track.style.transition = 'transform 0.25s ease-out'; track.style.transform = `translateX(${-w}px)`; }
+    if (dx < 0 && idx < catList.length - 1) {
+      swipeSearchCat(catList[idx + 1], 'none');
+    } else if (dx > 0 && idx > 0) {
+      swipeSearchCat(catList[idx - 1], 'none');
     }
   }, { passive: true });
 }
@@ -3634,8 +3584,8 @@ let searchCatFilter = 'all';
 let searchSort = 'popular';
 let _searchActiveSlide = 'curr';
 
-function _getSearchTrack() { return document.getElementById('search-slider-track'); }
-function _getSearchSlide(id) { return document.getElementById(`search-slide-${id}`); }
+function _getSearchTrack() { return document.getElementById('search-content'); }
+function _getSearchSlide(id) { return document.getElementById('search-content'); }
 
 function _buildSearchContent(filtered) {
   if (filtered.length === 0) return '';
@@ -3806,61 +3756,23 @@ function getSuggestedQuotes(keyword, max = 5) {
 }
 
 function doSearch(direction = 'none') {
-  const track = _getSearchTrack();
-  const prev = _getSearchSlide('prev');
-  const curr = _getSearchSlide('curr');
-  const next = _getSearchSlide('next');
+  const content = document.getElementById('search-content');
   const sortBar = document.getElementById('search-sort-bar');
   const countEl = document.getElementById('search-count');
-  if (!track || !curr) return;
+  if (!content) return;
 
-  const catList = _searchCatList();
-  const idx = catList.indexOf(searchCatFilter);
+  const data = _buildSearchSlide(searchCatFilter);
 
-  // まず現在のスライドだけ即座に生成（スムーズに見せる）
-  const currData = _buildSearchSlide(searchCatFilter);
-  curr.innerHTML = currData.html;
+  // フェードで切り替え
+  content.style.transition = 'opacity 0.15s';
+  content.style.opacity = '0';
+  setTimeout(() => {
+    content.innerHTML = data.html;
+    content.style.opacity = '1';
+  }, 150);
 
-  // 結果バー・件数を更新
   if (sortBar) sortBar.style.display = 'flex';
-  if (countEl) countEl.textContent = `${currData.count}件`;
-
-  // アニメーション
-  if (direction === 'none') {
-    track.style.transition = 'none';
-    track.style.transform = 'translateX(-33.333%)';
-  } else if (direction === 'left') {
-    track.style.transition = 'none';
-    track.style.transform = 'translateX(-33.333%)';
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      track.style.transition = 'transform 0.3s ease-out';
-      track.style.transform = 'translateX(-66.666%)';
-    }));
-  } else if (direction === 'right') {
-    track.style.transition = 'none';
-    track.style.transform = 'translateX(-33.333%)';
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      track.style.transition = 'transform 0.3s ease-out';
-      track.style.transform = 'translateX(0%)';
-    }));
-  }
-
-  // prev/nextはアニメーション完了後に非同期で生成（空のときだけ）
-  const buildNeighbors = () => {
-    const prevEl = _getSearchSlide('prev');
-    const nextEl = _getSearchSlide('next');
-    if (prevEl && !prevEl.innerHTML) {
-      prevEl.innerHTML = idx > 0 ? _buildSearchSlide(catList[idx - 1], 50).html : '';
-    }
-    if (nextEl && !nextEl.innerHTML) {
-      nextEl.innerHTML = idx < catList.length - 1 ? _buildSearchSlide(catList[idx + 1], 50).html : '';
-    }
-  };
-  if (window.requestIdleCallback) {
-    requestIdleCallback(buildNeighbors, { timeout: 500 });
-  } else {
-    setTimeout(buildNeighbors, 350);
-  }
+  if (countEl) countEl.textContent = `${data.count}件`;
 }
 
 // 検索カテゴリを切り替え（スワイプ・ボタン共通）
