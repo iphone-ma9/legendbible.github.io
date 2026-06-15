@@ -1862,7 +1862,11 @@ body {
     </div>
   </div>
   <div class="cat-slider" id="search-slider">
-    <div id="search-content" style="padding:16px 20px 20px;"></div>
+    <div class="cat-slider-track" id="search-slider-track">
+      <div class="cat-slide" id="search-slide-prev"></div>
+      <div class="cat-slide" id="search-slide-curr"></div>
+      <div class="cat-slide" id="search-slide-next"></div>
+    </div>
   </div>
   <div id="search-results" style="display:none"></div>
 </div>
@@ -3370,33 +3374,49 @@ function setupCatSwipe(area) {}
 function initSearchSwipe() {
   const slider = document.getElementById('search-slider');
   if (!slider) return;
-  let startX = 0, startY = 0, moved = false;
+  let startX = 0, startY = 0, currentX = 0, isDragging = false, isScrolling = false;
 
   slider.addEventListener('touchstart', e => {
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
-    moved = false;
+    currentX = 0;
+    isDragging = false;
+    isScrolling = false;
+    const track = _getSearchTrack();
+    if (track) track.style.transition = 'none';
   }, { passive: true });
 
   slider.addEventListener('touchmove', e => {
-    moved = true;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (!isDragging && !isScrolling) {
+      if (Math.abs(dy) > Math.abs(dx)) { isScrolling = true; return; }
+      else if (Math.abs(dx) > 8) { isDragging = true; }
+    }
+    if (!isDragging) return;
+    currentX = dx;
+    const w = slider.offsetWidth;
+    const track = _getSearchTrack();
+    if (track) track.style.transform = `translateX(${-w + dx}px)`;
   }, { passive: true });
 
-  slider.addEventListener('touchend', e => {
-    if (!moved) return;
-    const dx = e.changedTouches[0].clientX - startX;
-    const dy = e.changedTouches[0].clientY - startY;
-    // 縦移動が大きければ無視
-    if (Math.abs(dy) > Math.abs(dx)) return;
-    // 横移動が小さければ無視
-    if (Math.abs(dx) < 40) return;
-
+  slider.addEventListener('touchend', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    isScrolling = false;
+    const track = _getSearchTrack();
+    const w = slider.offsetWidth;
     const catList = _searchCatList();
     const idx = catList.indexOf(searchCatFilter);
-    if (dx < 0 && idx < catList.length - 1) {
-      swipeSearchCat(catList[idx + 1], 'none');
-    } else if (dx > 0 && idx > 0) {
-      swipeSearchCat(catList[idx - 1], 'none');
+
+    if (currentX < -50 && idx < catList.length - 1) {
+      if (track) { track.style.transition = 'transform 0.25s ease-out'; track.style.transform = `translateX(${-w * 2}px)`; }
+      setTimeout(() => swipeSearchCat(catList[idx + 1], 'none'), 250);
+    } else if (currentX > 50 && idx > 0) {
+      if (track) { track.style.transition = 'transform 0.25s ease-out'; track.style.transform = 'translateX(0px)'; }
+      setTimeout(() => swipeSearchCat(catList[idx - 1], 'none'), 250);
+    } else {
+      if (track) { track.style.transition = 'transform 0.25s ease-out'; track.style.transform = `translateX(${-w}px)`; }
     }
   }, { passive: true });
 }
@@ -3584,8 +3604,8 @@ let searchCatFilter = 'all';
 let searchSort = 'popular';
 let _searchActiveSlide = 'curr';
 
-function _getSearchTrack() { return document.getElementById('search-content'); }
-function _getSearchSlide(id) { return document.getElementById('search-content'); }
+function _getSearchTrack() { return document.getElementById('search-slider-track'); }
+function _getSearchSlide(id) { return document.getElementById('search-slide-' + id); }
 
 function _buildSearchContent(filtered) {
   if (filtered.length === 0) return '';
@@ -3756,23 +3776,55 @@ function getSuggestedQuotes(keyword, max = 5) {
 }
 
 function doSearch(direction = 'none') {
-  const content = document.getElementById('search-content');
+  const track = _getSearchTrack();
+  const prev = _getSearchSlide('prev');
+  const curr = _getSearchSlide('curr');
+  const next = _getSearchSlide('next');
   const sortBar = document.getElementById('search-sort-bar');
   const countEl = document.getElementById('search-count');
-  if (!content) return;
+  if (!track || !prev || !curr || !next) return;
 
-  const data = _buildSearchSlide(searchCatFilter);
+  const catList = _searchCatList();
+  const idx = catList.indexOf(searchCatFilter);
 
-  // フェードで切り替え
-  content.style.transition = 'opacity 0.15s';
-  content.style.opacity = '0';
-  setTimeout(() => {
-    content.innerHTML = data.html;
-    content.style.opacity = '1';
-  }, 150);
+  // ホームと全く同じ方式：curr/prev/nextを同時に生成
+  // currは100件、prev/nextは50件（重さ対策）
+  const currData = _buildSearchSlide(searchCatFilter);
+  curr.innerHTML = currData.html;
+  prev.innerHTML = idx > 0 ? _buildSearchSlide(catList[idx - 1], 50).html : '';
+  next.innerHTML = idx < catList.length - 1 ? _buildSearchSlide(catList[idx + 1], 50).html : '';
 
   if (sortBar) sortBar.style.display = 'flex';
-  if (countEl) countEl.textContent = `${data.count}件`;
+  if (countEl) countEl.textContent = `${currData.count}件`;
+
+  // ホームと全く同じアニメーション
+  if (direction === 'none') {
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(-33.333%)';
+  } else if (direction === 'fade') {
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(-33.333%)';
+    curr.style.opacity = '0';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      curr.style.transition = 'opacity 0.35s ease';
+      curr.style.opacity = '1';
+      setTimeout(() => { curr.style.transition = ''; }, 400);
+    }));
+  } else if (direction === 'left') {
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(-33.333%)';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.3s ease-out';
+      track.style.transform = 'translateX(-66.666%)';
+    }));
+  } else {
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(-33.333%)';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.3s ease-out';
+      track.style.transform = 'translateX(0%)';
+    }));
+  }
 }
 
 // 検索カテゴリを切り替え（スワイプ・ボタン共通）
