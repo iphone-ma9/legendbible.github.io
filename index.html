@@ -3844,6 +3844,11 @@ function doSearch(direction = 'none') {
   const countEl = document.getElementById('search-count');
   if (!track || !prev || !curr || !next) return;
 
+  // キーワードがあればバツボタンを常に表示
+  const input = document.getElementById('search-input');
+  const clearBtn = document.getElementById('search-clear-btn');
+  if (clearBtn) clearBtn.style.display = (input && input.value) ? 'flex' : 'none';
+
   const catList = _searchCatList();
   const idx = catList.indexOf(searchCatFilter);
 
