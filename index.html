@@ -3314,8 +3314,9 @@ function renderCatQuotesHome(direction = 'none') {
   next.innerHTML = idx < catIds.length - 1 ? _buildSlideContent(catIds[idx + 1]) : '';
 
   const countEl = document.getElementById('cat-sort-count');
-  const cnt = currentCatId === 'all' ? QUOTES.length : QUOTES.filter(q=>q.cats.includes(currentCatId)).length;
-  if (countEl) countEl.textContent = `${cnt}件`;
+  let cnt = currentCatId === 'all' ? QUOTES.slice() : QUOTES.filter(q => q.cats.includes(currentCatId));
+  if (catFilterSage !== 'all') cnt = cnt.filter(q => q.sage === catFilterSage);
+  if (countEl) countEl.textContent = `${cnt.length}件`;
 
   // アニメーション
   if (direction === 'none') {
