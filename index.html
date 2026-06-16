@@ -4959,6 +4959,10 @@ function clearAllFavs() {
 
 // QUOTESを外部JSONから非同期ロード
 async function loadQuotes() {
+  // 最低表示時間（1.5秒）とJSON読み込みを並行実行
+  const MIN_DISPLAY = 1500;
+  const startTime = Date.now();
+
   try {
     const res = await fetch('./data/quotes.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -4968,13 +4972,18 @@ async function loadQuotes() {
   } catch(e) {
     console.error('quotes.json load error:', e);
   } finally {
-    // 成功・失敗どちらでもローディング画面を消す
-    const loading = document.getElementById('loading-screen');
-    if (loading) {
-      loading.style.opacity = '0';
-      loading.style.transition = 'opacity 0.3s';
-      setTimeout(() => loading.remove(), 300);
-    }
+    // 経過時間を計算して、最低表示時間に満たない分だけ待つ
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, MIN_DISPLAY - elapsed);
+
+    setTimeout(() => {
+      const loading = document.getElementById('loading-screen');
+      if (loading) {
+        loading.style.opacity = '0';
+        loading.style.transition = 'opacity 0.4s';
+        setTimeout(() => loading.remove(), 400);
+      }
+    }, remaining);
   }
 }
 
