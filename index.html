@@ -2776,19 +2776,27 @@ function renderSageFilterList(context) {
   const count = sorted.length;
 
   listEl.innerHTML = `
-    <div style="font-size:11px;color:rgba(255,255,255,0.4);padding:4px 0 8px;">
+    <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.75);padding:4px 0 10px;">
       ${count}人が該当
     </div>
-    <button class="modal-sage-search-btn ${currentFilter==='all'?'sage-filter-active':''}"
-      style="${currentFilter==='all'?'background:#3A3A3C;border-color:rgba(255,255,255,0.25);color:#fff;':''}"
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+    <button class="modal-sage-search-btn"
+      style="font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;white-space:nowrap;
+             border:1px solid ${currentFilter==='all'?'rgba(255,255,255,0.6)':'rgba(255,255,255,0.2)'};
+             background:${currentFilter==='all'?'rgba(255,255,255,0.15)':'transparent'};
+             color:${currentFilter==='all'?'#fff':'rgba(255,255,255,0.55)'};"
       onclick="${selectFn}('all')">すべて</button>
     ${sorted.map(([id, sage]) => {
       const qcount = QUOTES.filter(q=>q.sage===id).length;
       const isActive = currentFilter === id;
-      return `<button class="modal-sage-search-btn ${isActive?'sage-filter-active':''}"
-        style="${isActive?'background:#3A3A3C;border-color:rgba(255,255,255,0.25);color:#fff;':''}"
+      return `<button class="modal-sage-search-btn"
+        style="font-size:11px;padding:4px 10px;border-radius:16px;cursor:pointer;white-space:nowrap;
+               border:1px solid ${isActive?'rgba(255,255,255,0.6)':'rgba(255,255,255,0.2)'};
+               background:${isActive?'rgba(255,255,255,0.15)':'transparent'};
+               color:${isActive?'#fff':'rgba(255,255,255,0.55)'};"
         onclick="${selectFn}('${id}')">${sage.name}（${qcount}）</button>`;
     }).join('')}
+    </div>
   `;
 }
 
