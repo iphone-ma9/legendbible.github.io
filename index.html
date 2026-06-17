@@ -5354,12 +5354,16 @@ function renderDiagnosisResult() {
   }
 
   // ボタン群
+  const sageColor = (rq && sage) ? sage.color : catColor;
+  const sageName  = (rq && sage) ? sage.name : '';
+  const sageId    = (rq) ? rq.sage : '';
+
   const actions = document.createElement('div');
   actions.className = 'diagnosis-result-actions';
   actions.innerHTML = `
-    <button class="cat-sort-btn" style="width:100%;justify-content:center;background:${catColor};color:#fff;border-color:${catColor};"
-      onclick="switchTab('search');setTimeout(()=>setSearchCat('${mapping.cats[0]}',null),300)">
-      「${catName}」の名言をもっと見る
+    <button class="cat-sort-btn" style="width:100%;justify-content:center;background:${sageColor};color:#fff;border-color:${sageColor};"
+      onclick="switchTab('search');setTimeout(()=>{searchFilterSage='${sageId}';doSearch();},300)">
+      ${sageName}の名言をもっと見る
     </button>
     <div style="display:flex;justify-content:center;">
       <button class="cat-sort-btn" style="display:inline-flex;align-items:center;gap:6px;" onclick="initDiagnosis()">
