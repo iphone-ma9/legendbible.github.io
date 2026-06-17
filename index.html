@@ -5040,14 +5040,29 @@ function renderSageDiagnosisResult() {
         <div style="font-size:13px;color:#fff;line-height:1.75;">${sage.bio || ''}</div>
       </div>
 
-      ${pickQuote ? `<div class="diagnosis-result-tile" onclick="openModal(${pickQuote.id})">
-        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">この偉人の名言</div>
-        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.7;">${pickQuote.ja}</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:8px;">タップして詳しく見る →</div>
-      </div>` : ''}
+      ${pickQuote ? (() => {
+        const liked = !!likes[pickQuote.id];
+        const likeCount = pickQuote.likes + (likes[pickQuote.id] ? 1 : 0);
+        const isFav = favs.includes(pickQuote.id);
+        const isViewed = viewed.some(v => v.id === pickQuote.id);
+        return `<div class="diagnosis-result-tile" onclick="openModal(${pickQuote.id})">
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">この偉人の名言</div>
+          <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.7;">${pickQuote.ja}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:6px;">${pickQuote.source || ''}</div>
+          <div class="today-card-actions" style="margin-top:14px;" onclick="event.stopPropagation()">
+            <button class="card-icon-action like-btn ${liked?'active':''}" onclick="toggleLike(${pickQuote.id},this)" data-id="${pickQuote.id}">
+              <span class="like-icon">${heartSvg(liked,18)}</span><span class="like-count-inline">${likeCount}</span>
+            </button>
+            <button class="card-icon-action fav-btn ${isFav?'active':''}" onclick="toggleFav(${pickQuote.id},this)" data-fav-id="${pickQuote.id}">
+              <svg class="fav-svg" viewBox="0 0 24 24" width="18" height="18" fill="${isFav?'rgba(255,255,255,0.85)':'none'}" stroke="rgba(255,255,255,0.55)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 011 1v17l-7-3.5L5 21V4a1 1 0 011-1z"/></svg>
+            </button>
+            <span class="viewed-icon" data-viewed-id="${pickQuote.id}" onclick="onViewedIconClick(${pickQuote.id},event)">${clockSvg(isViewed,20)}</span>
+          </div>
+        </div>`;
+      })() : ''}
 
       ${runners.length > 0 ? `<div class="diagnosis-result-tile" style="cursor:default;">
-        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">次点の偉人</div>
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">その他あなたと共鳴する偉人</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">${runners.map(n => `<span style="font-size:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;color:rgba(255,255,255,0.8);">${n}</span>`).join('')}</div>
       </div>` : ''}
 
