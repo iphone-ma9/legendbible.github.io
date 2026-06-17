@@ -3841,6 +3841,7 @@ function clearSearch() {
   const clearBtn = document.getElementById('search-clear-btn');
   if (input) input.value = '';
   if (clearBtn) clearBtn.style.display = 'none';
+  searchFilterSage = 'all';
   searchShowMore = 12;
   doSearch();
 }
@@ -5065,7 +5066,7 @@ function renderSageDiagnosisResult() {
 
       ${runners.length > 0 ? `<div class="diagnosis-result-tile" style="cursor:default;">
         <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">その他あなたと共鳴する偉人</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">${runners.map(([id,name]) => `<button onclick="switchTab('search');setTimeout(()=>{document.getElementById('search-input').value='${name}';searchFilterSage='${id}';doSearch();},300)" style="font-size:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;color:rgba(255,255,255,0.8);cursor:pointer;">${name}</button>`).join('')}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">${runners.map(([id,name]) => `<button onclick="switchTab('search');setTimeout(()=>{const inp=document.getElementById('search-input');if(inp){inp.value='${name}';const cb=document.getElementById('search-clear-btn');if(cb)cb.style.display='flex';}searchFilterSage='all';doSearch();},300)" style="font-size:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;color:rgba(255,255,255,0.8);cursor:pointer;">${name}</button>`).join('')}</div>
       </div>` : ''}
 
       <div class="diagnosis-result-actions">
