@@ -1003,12 +1003,14 @@ body {
   z-index: 500;
   display: none;
   align-items: flex-end;
+  justify-content: center;
 }
 .modal-overlay.open { display: flex; }
 .modal-sheet {
   background: #1A3A5C;
   border-radius: 20px 20px 0 0;
   width: 100%;
+  max-width: 430px;
   max-height: 80vh;
   overflow-y: auto;
   padding: 0 0 calc(20px + var(--safe-b));
@@ -2154,13 +2156,6 @@ body {
     <p>運営者は、必要に応じて本規約を変更できるものとします。変更後の規約は本アプリ内に掲載した時点で効力を生じます。</p>
     <h2>第7条（準拠法）</h2>
     <p>本規約の解釈には日本法を準拠法とし、紛争が生じた場合は運営者の所在地を管轄する裁判所を専属的合意管轄裁判所とします。</p>
-  </div>
-</div>
-<div class="modal-overlay" id="modal" onclick="closeModal(event)">
-  <div class="modal-sheet" id="modal-sheet" style="position:relative;" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-handle" id="modal-handle"></div>
-    <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 
@@ -5143,5 +5138,14 @@ async function loadQuotes() {
 
 loadQuotes().then(init);
 </script>
+<!-- モーダル（body直下に配置してfixedの基点を統一）-->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-sheet" id="modal-sheet" style="position:relative;" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-handle" id="modal-handle"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
 </body>
 </html>
