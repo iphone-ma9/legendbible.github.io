@@ -1378,6 +1378,7 @@ body {
   box-shadow: 0 6px 24px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.10);
 }
 .diagnosis-result-tile:active { transform: scale(0.98); }
+.diagnosis-result-tile.is-viewed { background: #1A3A5C; border-left: 3px solid #3A7BD5; }
 .diagnosis-result-tile-ja {
   font-size: 19px;
   font-weight: 800;
@@ -3788,7 +3789,7 @@ function renderQuoteTile(q, showTags = false) {
           <button class="card-icon-action fav-btn ${favs.includes(q.id)?'active':''}" onclick="toggleFav(${q.id},this)" data-fav-id="${q.id}">
             <svg class="fav-svg" viewBox="0 0 24 24" width="16" height="16" fill="${favs.includes(q.id)?'rgba(255,255,255,0.85)':'none'}" stroke="rgba(255,255,255,0.55)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 011 1v17l-7-3.5L5 21V4a1 1 0 011-1z"/></svg>
           </button>
-          <span class="viewed-icon" data-viewed-id="${q.id}" onclick="onViewedIconClick(${q.id}, event)">${clockSvg(isViewed, 20)}</span>
+          <span class="viewed-icon" data-viewed-id="${q.id}" onclick="onViewedIconClick(${q.id}, event)">${clockSvg(isViewed, 14)}</span>
         </div>
       </div>
     </div>
@@ -4174,7 +4175,7 @@ function renderFavs() {
         const tiles = qs.map(q => renderFavTile(q)).join('');
         html += `<div class="cat-top-grid" style="padding:0 20px 8px;">${tiles}</div>`;
       } else {
-        html += `<div class="quote-list" style="padding:0 20px 8px;">${qs.map(q=>renderQuoteTile(q,false)).join('')}</div>`;
+        html += `<div class="quote-list" style="padding:0 20px 8px;">${qs.map(q=>renderQuoteTile(q,true)).join('')}</div>`;
       }
     });
     container.innerHTML = html;
@@ -4759,6 +4760,7 @@ function setDiagLayout(layout, btn) {
 }
 
 // ── 診断タイプ管理 ──
+let _diagBusy = false; // アニメーション中・処理中フラグ
 let diagnosisType = null; // 'quote' or 'sage'
 let sageDiagAnswers = {};
 let sageDiagStep = 0;
@@ -5020,7 +5022,7 @@ function renderSageDiagnosisResult() {
         const likeCount = pickQuote.likes + (likes[pickQuote.id] ? 1 : 0);
         const isFav = favs.includes(pickQuote.id);
         const isViewed = viewed.some(v => v.id === pickQuote.id);
-        return `<div class="diagnosis-result-tile${isViewed?' is-viewed':''}" onclick="openModal(${pickQuote.id})" style="${isViewed?'border-left:3px solid #3A7BD5;':''}">
+        return `<div class="diagnosis-result-tile${isViewed?' is-viewed':''}" onclick="openModal(${pickQuote.id})">
           <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">この偉人の名言</div>
           <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.7;">${pickQuote.ja}</div>
           <div style="height:1px;background:rgba(255,255,255,0.12);margin:12px 0;"></div>
@@ -5126,8 +5128,6 @@ function initDiagSwipe() {
     pressedBtn = null;
   }, { passive: true });
 }
-
-let _diagBusy = false; // アニメーション中・処理中フラグ
 
 function onDiagQuoteClick(btn) {
   if (_diagBusy) return;
@@ -5344,7 +5344,7 @@ function renderDiagnosisResult() {
   actions.className = 'diagnosis-result-actions';
   actions.innerHTML = `
     <button class="cat-sort-btn" style="width:100%;justify-content:center;background:${sageColor};color:#fff;border-color:${sageColor};"
-      onclick="switchTab('search');setTimeout(()=>{searchFilterSage='${sageId}';doSearch();},300)">
+      onclick="switchTab('search');setTimeout(()=>{const inp=document.getElementById('search-input');if(inp){inp.value='${sageName}';const cb=document.getElementById('search-clear-btn');if(cb)cb.style.display='flex';}searchFilterSage='${sageId}';doSearch();},300)">
       ${sageName}の名言をもっと見る
     </button>
     <div style="display:flex;justify-content:center;">
