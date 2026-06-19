@@ -5098,8 +5098,11 @@ function initDiagSwipe() {
 
     if (!moved) {
       const btn = e.target.closest('.diagnosis-choice-btn:not(.diag-top-btn)');
-      if (btn) {
+      if (btn && !_diagBusy) {
+        _diagBusy = true;
         btn.classList.add('pressed');
+        // 全ボタンを即座にタップ不可にして連打防止
+        body.querySelectorAll('.diagnosis-choice-btn').forEach(b => b.style.pointerEvents = 'none');
         setTimeout(() => {
           btn.classList.remove('pressed');
           if (btn.hasAttribute('data-sage-qid')) {
@@ -5123,6 +5126,8 @@ function initDiagSwipe() {
             btn.style.borderColor = '#1A3A5C';
             selectDiagChoice(qId, value);
           }
+          // アニメーション完了後にロック解除
+          setTimeout(() => { _diagBusy = false; }, 400);
         }, 120);
       }
     } else if (dx > 50) {
