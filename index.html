@@ -5008,7 +5008,7 @@ function renderSageDiagnosisResult() {
 
   body.innerHTML = `<div class="diag-slide-wrap">
     <div class="diagnosis-result">
-      <div class="diagnosis-result-label section-title" style="font-size:17px;font-weight:800;letter-spacing:-0.01em;color:#fff;margin-bottom:12px;">あなたと共鳴する偉人</div>
+      <div class="diagnosis-result-label section-title" style="font-size:17px;font-weight:800;letter-spacing:-0.01em;color:#000;margin-bottom:12px;">あなたと共鳴する偉人</div>
 
       <div class="diagnosis-result-tile" onclick="switchTab('search');setTimeout(()=>{const inp=document.getElementById('search-input');if(inp){inp.value='${sage.name}';const cb=document.getElementById('search-clear-btn');if(cb)cb.style.display='flex';}searchFilterSage='all';doSearch();},300)">
         <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">${sage.nameEn} ${sage.years || ''}</div>
@@ -5020,10 +5020,14 @@ function renderSageDiagnosisResult() {
           <div style="font-size:13px;font-weight:800;color:#fff;min-width:36px;">${pct}%</div>
         </div>
         <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:14px;">「${rank}」</div>
-        <div style="border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:14px;">
+        <div style="border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:14px;margin-bottom:${runners.length>0?'12px':'0'};">
           <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:8px;">プロフィール</div>
           <div style="font-size:13px;color:#fff;line-height:1.75;">${sage.bio || ''}</div>
         </div>
+        ${runners.length > 0 ? `<div style="border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:14px;" onclick="event.stopPropagation()">
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">その他あなたと共鳴する偉人</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">${runners.map(([id,name]) => `<button onclick="event.stopPropagation();switchTab('search');setTimeout(()=>{const inp=document.getElementById('search-input');if(inp){inp.value='${name}';const cb=document.getElementById('search-clear-btn');if(cb)cb.style.display='flex';}searchFilterSage='all';doSearch();},300)" style="font-size:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;color:rgba(255,255,255,0.8);cursor:pointer;">${name}</button>`).join('')}</div>
+        </div>` : ''}
       </div>
 
       ${pickQuote ? (() => {
@@ -5031,7 +5035,7 @@ function renderSageDiagnosisResult() {
         const likeCount = pickQuote.likes + (likes[pickQuote.id] ? 1 : 0);
         const isFav = favs.includes(pickQuote.id);
         const isViewed = viewed.some(v => v.id === pickQuote.id);
-        return `<div class="diagnosis-result-label" style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:8px;">この偉人の名言</div>
+        return `<div class="diagnosis-result-label section-title" style="font-size:17px;font-weight:800;letter-spacing:-0.01em;color:#000;margin-bottom:12px;">この偉人の名言</div>
         <div class="diagnosis-result-tile${isViewed?' is-viewed':''}" onclick="openModal(${pickQuote.id})" data-card-id="${pickQuote.id}">
           <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.7;">${pickQuote.ja}</div>
           <div style="height:1px;background:rgba(255,255,255,0.12);margin:12px 0;"></div>
@@ -5046,11 +5050,6 @@ function renderSageDiagnosisResult() {
           </div>
         </div>`;
       })() : ''}
-
-      ${runners.length > 0 ? `<div class="diagnosis-result-tile" style="cursor:default;">
-        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.08em;margin-bottom:10px;">その他あなたと共鳴する偉人</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">${runners.map(([id,name]) => `<button onclick="switchTab('search');setTimeout(()=>{const inp=document.getElementById('search-input');if(inp){inp.value='${name}';const cb=document.getElementById('search-clear-btn');if(cb)cb.style.display='flex';}searchFilterSage='all';doSearch();},300)" style="font-size:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;color:rgba(255,255,255,0.8);cursor:pointer;">${name}</button>`).join('')}</div>
-      </div>` : ''}
 
       <div class="diagnosis-result-actions">
         <button class="cat-sort-btn" style="width:100%;justify-content:center;" onclick="switchTab('search');setTimeout(()=>{searchFilterSage='${topId}';doSearch();},300)">この偉人の名言をもっと見る</button>
