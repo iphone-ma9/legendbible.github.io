@@ -4843,6 +4843,9 @@ function initDiagnosis() {
   _diagBusy = false;
   renderDiagnosisTop();
   initDiagSwipe();
+  // スクロール位置をトップにリセット（結果画面から戻った際に下にずれないように）
+  const screen = document.getElementById('screen-diagnosis');
+  if (screen) screen.scrollTop = 0;
 }
 
 function renderDiagnosisTop() {
@@ -4879,6 +4882,8 @@ function startDiagnosis(type) {
   sageDiagAnswers = {};
   sageDiagStep = 0;
   _diagBusy = false;
+  const screen = document.getElementById('screen-diagnosis');
+  if (screen) screen.scrollTop = 0;
   if (type === 'quote') {
     renderDiagnosisStep('slide');
   } else {
