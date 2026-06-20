@@ -3238,6 +3238,52 @@ function init() {
   checkDailyUpdate();
   initModalHandle();
   initLongPress();
+
+  // SEOページから ?sage= / ?quote= / ?cat= で遷移してきた場合の自動オープン処理
+  handleUrlParams();
+}
+
+// SEOページ（/sages/{id}/, /quotes/{id}/, /categories/{id}/）の
+// 「アプリで見る」ボタンから ?sage=xxx / ?quote=123 / ?cat=xxx で
+// 遷移してきたときに該当画面を自動で開く
+function handleUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const sageId = params.get('sage');
+  const quoteId = params.get('quote');
+  const catId = params.get('cat');
+
+  if (quoteId) {
+    // 名言モーダルを直接開く
+    const id = parseInt(quoteId, 10);
+    if (!isNaN(id) && QUOTES.some(q => q.id === id)) {
+      setTimeout(() => openModal(id), 300);
+    }
+  } else if (sageId && SAGES[sageId]) {
+    // 検索画面でその偉人にフィルターして開く
+    setTimeout(() => {
+      switchTab('search');
+      setTimeout(() => {
+        searchFilterSage = sageId;
+        doSearch();
+      }, 200);
+    }, 100);
+  } else if (catId && CATEGORIES.some(c => c.id === catId)) {
+    // 検索画面でそのカテゴリにフィルターして開く
+    setTimeout(() => {
+      switchTab('search');
+      setTimeout(() => {
+        searchCatFilter = catId;
+        renderSearchCatFilter();
+        doSearch();
+      }, 200);
+    }, 100);
+  }
+
+  // URLをきれいにする（パラメータを残さない。ブラウザバック時の二重発火防止）
+  if (sageId || quoteId || catId) {
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, '', cleanUrl);
+  }
 }
 
 // ── ランダム名言 ──
@@ -5517,7 +5563,7 @@ function clearAllFavs() {
 }
 
 // ── アプリバージョン（更新時にここを上げるとキャッシュが無効化される）──
-const APP_VERSION = '1.0.7';
+const APP_VERSION = '1.0.8';
 
 // QUOTESを外部JSONから非同期ロード
 async function loadQuotes() {
