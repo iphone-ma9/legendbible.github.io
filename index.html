@@ -1607,6 +1607,17 @@ body {
   display: flex;
   z-index: 200;
 }
+/* PWAスタンドアロン（デスクトップ追加時）はタブバーを少し上に */
+@media (display-mode: standalone) {
+  .tab-bar {
+    bottom: 16px;
+    border-radius: 20px;
+    width: calc(100% - 32px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3), 0 -1px 0 rgba(0,0,0,0.10);
+  }
+  body { padding-bottom: calc(var(--tab-h) + var(--safe-b) + 24px); }
+  .screen { height: calc(100dvh - var(--tab-h) - var(--safe-b) - 24px); }
+}
 .tab-btn {
   flex: 1;
   display: flex;
