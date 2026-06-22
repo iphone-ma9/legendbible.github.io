@@ -291,10 +291,42 @@ body {
   scroll-padding-left: 20px;
 }
 .today-scroll::-webkit-scrollbar { display: none; }
+/* PC用スクロール矢印ボタン */
+.today-nav-btn {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  /* PC（マウス操作）の場合のみ矢印を表示 */
+  .today-nav-wrap {
+    position: relative;
+  }
+  .today-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(calc(-50% - 12px));
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    color: #fff;
+    font-size: 16px;
+    transition: background 0.2s;
+  }
+  .today-nav-btn:hover { background: rgba(255,255,255,0.28); }
+  .today-nav-btn.prev { left: 4px; }
+  .today-nav-btn.next { right: 4px; }
+}
 
 .today-card {
   flex-shrink: 0;
-  width: calc(100vw - 56px);
+  width: calc(min(100vw, 430px) - 56px);
   height: 290px;
   border-radius: 16px;
   padding: 0;
@@ -1821,7 +1853,11 @@ body {
     <span class="section-title">今日の名言</span>
     <span class="header-date-inline" id="today-label-inline"></span>
   </div>
-  <div class="today-scroll" id="today-scroll"></div>
+  <div class="today-nav-wrap">
+    <button class="today-nav-btn prev" onclick="todayNavScroll(-1)">&#8249;</button>
+    <div class="today-scroll" id="today-scroll"></div>
+    <button class="today-nav-btn next" onclick="todayNavScroll(1)">&#8250;</button>
+  </div>
   <div class="today-dots" id="today-dots"></div>
 
   <!-- ランダム名言 -->
@@ -5615,6 +5651,14 @@ async function loadQuotes() {
 }
 
 loadQuotes().then(init);
+
+// 今日の名言 PC用矢印ナビゲーション
+function todayNavScroll(dir) {
+  const sc = document.getElementById('today-scroll');
+  if (!sc) return;
+  const cardWidth = sc.querySelector('.today-card')?.offsetWidth || 300;
+  sc.scrollBy({ left: dir * (cardWidth + 12), behavior: 'smooth' });
+}
 
 // Service Worker登録（PWA対応）
 if ('serviceWorker' in navigator) {
