@@ -4588,16 +4588,36 @@ function setSearchCat(catId, btn) {
   const catList = _searchCatList();
   const prevIdx = catList.indexOf(searchCatFilter);
   const nextIdx = catList.indexOf(catId);
+  const direction = nextIdx > prevIdx ? 'left' : nextIdx < prevIdx ? 'right' : 'none';
+
+  // ホームのselectCatと同じ：ボタンを直接使って即時スタイル適用
+  document.querySelectorAll('.search-cat-btn').forEach(b => {
+    b.classList.remove('active');
+    b.style.cssText = '';
+  });
+  if (btn) {
+    btn.classList.add('active');
+    const cat = CATEGORIES.find(c => c.id === catId);
+    if (catId === 'all') {
+      btn.style.cssText = allBtnActiveStyle();
+    } else if (cat) {
+      btn.style.background = cat.color;
+      btn.style.borderColor = cat.color;
+      btn.style.color = '#fff';
+    }
+    // ボタンが見える位置へ即スクロール（ホームと同じ）
+    const scroll = document.getElementById('search-cat-scroll');
+    if (scroll) scroll.scrollTo({ left: btn.offsetLeft - 20, behavior: 'smooth' });
+  }
+
+  // スライドアニメーション（ホームと同じ）
   const slider = document.getElementById('search-slider');
   const track = _getSearchTrack();
   const w = slider ? slider.offsetWidth : 390;
-
-  if (nextIdx > prevIdx) {
-    // 右のボタン：左へスライドアウト
+  if (direction === 'left') {
     if (track) { track.style.transition = 'transform 0.25s ease-in'; track.style.transform = `translateX(${-w * 2}px)`; }
     setTimeout(() => swipeSearchCat(catId, 'none'), 250);
-  } else if (nextIdx < prevIdx) {
-    // 左のボタン：右へスライドアウト
+  } else if (direction === 'right') {
     if (track) { track.style.transition = 'transform 0.25s ease-in'; track.style.transform = 'translateX(0px)'; }
     setTimeout(() => swipeSearchCat(catId, 'none'), 250);
   } else {
@@ -5231,23 +5251,45 @@ function switchTab(tab) {
 // ══════════════════════════════════════
 function jumpToSearch(tag) {
   switchTab('search');
+  // 検索窓にテキスト表示＋クリアボタン表示
   const input = document.getElementById('search-input');
-  if (input) input.value = tag;
+  if (input) {
+    input.value = tag;
+    const clearBtn = document.getElementById('search-clear-btn');
+    if (clearBtn) clearBtn.style.display = tag ? 'flex' : 'none';
+  }
   searchCatFilter = 'all';
   searchFilterSage = 'all';
   searchShowMore = 12;
   renderSearchCatFilter();
   doSearch();
+  // タブ切り替えアニメーション後にカテゴリ「すべて」ボタンを左端へスクロール
+  setTimeout(() => {
+    const scroll = document.getElementById('search-cat-scroll');
+    const activeBtn = scroll && scroll.querySelector('.search-cat-btn.active');
+    if (scroll && activeBtn) scroll.scrollTo({ left: activeBtn.offsetLeft - 20, behavior: 'smooth' });
+  }, 200);
 }
 function jumpToCategory(catId) {
   switchTab('search');
-  searchCatFilter = catId;
+  // 検索窓をクリア
   const input = document.getElementById('search-input');
-  if (input) input.value = '';
+  if (input) {
+    input.value = '';
+    const clearBtn = document.getElementById('search-clear-btn');
+    if (clearBtn) clearBtn.style.display = 'none';
+  }
+  searchCatFilter = catId;
   searchFilterSage = 'all';
   searchShowMore = 12;
   renderSearchCatFilter();
   doSearch();
+  // タブ切り替えアニメーション後にアクティブなカテゴリボタンを左端へスクロール
+  setTimeout(() => {
+    const scroll = document.getElementById('search-cat-scroll');
+    const activeBtn = scroll && scroll.querySelector('.search-cat-btn.active');
+    if (scroll && activeBtn) scroll.scrollTo({ left: activeBtn.offsetLeft - 20, behavior: 'smooth' });
+  }, 200);
 }
 
 function showToast(html) {
@@ -6185,7 +6227,7 @@ function clearAllFavs() {
 }
 
 // ── アプリバージョン（更新時にここを上げるとキャッシュが無効化される）──
-const APP_VERSION = '1.8.0';
+const APP_VERSION = '1.9.0';
 
 // QUOTESを外部JSONから非同期ロード
 async function loadQuotes() {
