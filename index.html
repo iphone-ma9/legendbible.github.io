@@ -5564,18 +5564,18 @@ const SAGE_DIAGNOSIS_QUESTIONS = [
     { value:'passion', icon:'fire',    text:'情熱・信念を貫くこと' },
     { value:'truth',   icon:'brain',   text:'真実・知識を追求すること' },
     { value:'love',    icon:'heart',   text:'人を愛し・助けること' },
-    { value:'conquer', icon:'sword',   text:'困難に打ち勝つこと' },
+    { value:'justice',  icon:'sword',   text:'正義・公正を貫くこと' },
   ]},
   { id:'wall', label:'Q2 / 5', question:'壁にぶつかった時、あなたは？', choices:[
-    { value:'surge',   icon:'wave',    text:'逆らって突き進む' },
+    { value:'surge',   icon:'wave',    text:'正面から突き進む' },
     { value:'wait',    icon:'turtle',  text:'じっくり待って機を見る' },
-    { value:'team',    icon:'hands',   text:'仲間と力を合わせる' },
-    { value:'pivot',   icon:'pivot',   text:'視点を変えて別の道を探す' },
+    { value:'surge',   icon:'hands',   text:'仲間と力を合わせて突破する' },
+    { value:'wait',    icon:'pivot',   text:'一歩引いて別の道を探す' },
   ]},
   { id:'type', label:'Q3 / 5', question:'あなたが惹かれるタイプは？', choices:[
     { value:'art',        icon:'art',       text:'芸術・美・創造性を体現する人' },
     { value:'think',      icon:'think',     text:'深く考え・哲学する人' },
-    { value:'action',     icon:'action',    text:'結果で証明する行動の人' },
+    { value:'strategy',   icon:'action',    text:'戦略と行動で結果を出す人' },
     { value:'revolution', icon:'revolution',text:'世界を変えようとする革命家' },
   ]},
   { id:'strength', label:'Q4 / 5', question:'あなたの強みは？', choices:[
@@ -5585,10 +5585,10 @@ const SAGE_DIAGNOSIS_QUESTIONS = [
     { value:'spirit',  icon:'shield',  text:'どんな逆境も乗り越える精神力' },
   ]},
   { id:'life', label:'Q5 / 5', question:'理想の生き方は？', choices:[
-    { value:'legacy',  icon:'star',    text:'自分の名を歴史に刻む' },
-    { value:'deep',    icon:'moon',    text:'静かに深く・本質を生きる' },
-    { value:'world',   icon:'globe',   text:'世界や社会をより良くする' },
-    { value:'free',    icon:'bird',    text:'自分らしく・自由に生きる' },
+    { value:'world',   icon:'globe',   text:'世界・社会を変える仕事をしたい' },
+    { value:'deep',    icon:'moon',    text:'静かに深く・本質を生きたい' },
+    { value:'world',   icon:'star',    text:'多くの人の役に立ちたい' },
+    { value:'deep',    icon:'bird',    text:'自分らしく・自由に生きたい' },
   ]},
 ];
 
@@ -5714,14 +5714,18 @@ function renderSageDiagnosisResult() {
     scores[id] = score;
   });
 
-  // 最高スコアの偉人を選出（同点の場合は名言数が多い方）
+  // 名言数を集計
   const quoteCounts = {};
   QUOTES.forEach(q => { quoteCounts[q.sage] = (quoteCounts[q.sage] || 0) + 1; });
 
   const sorted = Object.entries(scores)
     .sort((a, b) => b[1] - a[1] || (quoteCounts[b[0]] || 0) - (quoteCounts[a[0]] || 0));
 
-  const [topId] = sorted[0];
+  // 最高スコアと同点・1点差以内の偉人グループからランダム選出
+  const topScore = sorted[0][1];
+  const topGroup = sorted.filter(([, s]) => s >= topScore - 1);
+  const pick = topGroup[Math.floor(Math.random() * topGroup.length)];
+  const [topId] = pick;
   const sage = SAGES[topId];
   const sageQuotes = QUOTES.filter(q => q.sage === topId);
   const pickQuote = sageQuotes[Math.floor(Math.random() * sageQuotes.length)];
@@ -6181,7 +6185,7 @@ function clearAllFavs() {
 }
 
 // ── アプリバージョン（更新時にここを上げるとキャッシュが無効化される）──
-const APP_VERSION = '1.7.0';
+const APP_VERSION = '1.8.0';
 
 // QUOTESを外部JSONから非同期ロード
 async function loadQuotes() {
