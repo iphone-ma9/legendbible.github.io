@@ -9,18 +9,18 @@
 <title>LEGEND BIBLE — レジェンドの名言</title>
 
 <!-- PWA -->
-<link rel="manifest" href="/legendbible.github.io/manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#0E0E10">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LEGEND BIBLE">
-<link rel="apple-touch-icon" href="/legendbible.github.io/icons/icon-180.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/legendbible.github.io/icons/icon-152.png">
-<link rel="apple-touch-icon" sizes="120x120" href="/legendbible.github.io/icons/icon-120.png">
-<link rel="icon" type="image/png" sizes="48x48" href="/legendbible.github.io/icons/favicon-48.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/legendbible.github.io/icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/legendbible.github.io/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="152x152" href="./icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="120x120" href="./icons/icon-120.png">
+<link rel="icon" type="image/png" sizes="48x48" href="./icons/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png">
 
 <!-- ① 基本SEO -->
 <meta name="description" content="ブッダ・孔子・ジョブズ・アインシュタインなど古今東西のレジェンドたちの名言を毎日お届け。やる気・仕事・人間関係・自己成長など8カテゴリ、50以上の名言を収録した無料の名言アプリです。">
@@ -6240,7 +6240,7 @@ function clearAllFavs() {
 }
 
 // ── アプリバージョン（更新時にここを上げるとキャッシュが無効化される）──
-const APP_VERSION = '2.0.2';
+const APP_VERSION = '2.1.0';
 
 // QUOTESを外部JSONから非同期ロード
 async function loadQuotes() {
@@ -6286,7 +6286,7 @@ function todayNavScroll(dir) {
 // Service Worker登録（PWA対応）
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/legendbible.github.io/sw.js')
+    navigator.serviceWorker.register('./sw.js')
       .then(reg => console.log('SW registered:', reg.scope))
       .catch(err => console.log('SW error:', err));
   });

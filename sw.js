@@ -1,23 +1,31 @@
-// LEGEND BIBLE - Service Worker
-// キャッシュ名（更新時はバージョンを上げる）
-const CACHE_NAME = 'legendbible-v1.0.9';
+const CACHE_NAME = 'legendbible-v2';
+const BASE = './';
 
-// オフライン時に表示するファイル（基本的なもののみ）
+// キャッシュするファイル
 const PRECACHE_URLS = [
-  '/legendbible.github.io/',
-  '/legendbible.github.io/index.html',
-  '/legendbible.github.io/manifest.json',
-  '/legendbible.github.io/icons/icon-192.png',
-  '/legendbible.github.io/icons/icon-512.png',
+  BASE,
+  BASE + 'index.html',
+  BASE + 'data/quotes.json',
+  BASE + 'icons/icon-192.png',
+  BASE + 'icons/icon-512.png',
+  BASE + 'icons/icon-180.png',
+  BASE + 'icons/icon-152.png',
+  BASE + 'icons/icon-120.png',
+  BASE + 'icons/favicon-48.png',
+  BASE + 'icons/favicon-32.png',
+  BASE + 'icons/favicon-16.png',
 ];
 
-// インストール時：基本ファイルをキャッシュ
+// インストール時：必須ファイルをキャッシュ
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(PRECACHE_URLS);
-    }).then(() => self.skipWaiting())
+      return cache.addAll(PRECACHE_URLS).catch(err => {
+        console.warn('SW precache error (non-fatal):', err);
+      });
+    })
   );
+  self.skipWaiting();
 });
 
 // アクティベート時：古いキャッシュを削除
@@ -25,42 +33,34 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys.filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
       )
-    ).then(() => self.clients.claim())
+    )
   );
+  self.clients.claim();
 });
 
-// フェッチ時：キャッシュ優先、なければネットワーク
-// quotes.jsonは常にネットワークから取得（名言データの更新を反映するため）
+// フェッチ：Network First（オンライン優先）、失敗時にキャッシュ
 self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url);
+  // chrome-extension や POST などはスキップ
+  if (event.request.method !== 'GET') return;
+  if (!event.request.url.startsWith('http')) return;
 
-  // quotes.jsonは常にネットワーク優先（キャッシュは使わない）
-  if (url.pathname.includes('quotes.json')) {
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request))
-    );
-    return;
-  }
-
-  // その他：キャッシュ優先
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      return cached || fetch(event.request).then(response => {
-        // 成功したレスポンスをキャッシュに追加
-        if (response.ok) {
+    fetch(event.request)
+      .then(response => {
+        // 正常レスポンスをキャッシュに保存
+        if (response && response.status === 200) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
         return response;
-      });
-    }).catch(() => {
-      // オフライン時はindex.htmlを返す
-      if (event.request.mode === 'navigate') {
-        return caches.match('/legendbible.github.io/index.html');
-      }
-    })
+      })
+      .catch(() => {
+        // オフライン時はキャッシュから返す
+        return caches.match(event.request).then(cached => {
+          return cached || caches.match(BASE + 'index.html');
+        });
+      })
   );
 });
