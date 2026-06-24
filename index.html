@@ -2092,6 +2092,10 @@ body {
       <div class="settings-row-name">利用規約</div>
       <span style="color:rgba(255,255,255,0.4)">›</span>
     </div>
+    <div class="settings-row" style="cursor:pointer;" onclick="switchTab('contact')">
+      <div class="settings-row-name">お問い合わせ</div>
+      <span style="color:rgba(255,255,255,0.4)">›</span>
+    </div>
     <div class="settings-row">
       <div class="settings-row-name" style="color:rgba(255,255,255,0.35)">バージョン 2.0.1</div>
     </div>
@@ -2204,7 +2208,7 @@ body {
     <p>本ポリシーは、必要に応じて変更される場合があります。変更後のポリシーは本アプリ内に掲載した時点で効力を生じるものとします。</p>
     <h2>お問い合わせ</h2>
     <p>プライバシーポリシーに関するお問い合わせは、下記メールアドレスまでご連絡ください。</p>
-    <p style="color:rgba(255,255,255,0.6);">📧 your-email@example.com</p>
+    <p style="color:rgba(255,255,255,0.6);">📧 <a href="mailto:legendbible.info@gmail.com" style="color:#3A7BD5;">legendbible.info@gmail.com</a></p>
     <h2>著作権について</h2>
     <p>本アプリに掲載している名言は各著作権者に帰属します。掲載にあたっては著作権法第32条に基づく適法な引用として掲載しています。名言の日本語訳は本アプリが独自に作成したものであり、翻訳の著作権は本アプリに帰属します。</p>
   </div>
@@ -2237,6 +2241,42 @@ body {
     <p>運営者は、必要に応じて本規約を変更できるものとします。変更後の規約は本アプリ内に掲載した時点で効力を生じます。</p>
     <h2>第7条（準拠法）</h2>
     <p>本規約の解釈には日本法を準拠法とし、紛争が生じた場合は運営者の所在地を管轄する裁判所を専属的合意管轄裁判所とします。</p>
+  </div>
+</div>
+
+<!-- お問い合わせ画面 -->
+<div class="screen" id="screen-contact">
+  <div class="legal-header">
+    <div class="legal-title">お問い合わせ</div>
+  </div>
+  <div class="legal-body">
+    <p class="legal-updated">LEGEND BIBLE 運営事務局</p>
+
+    <h2>お問い合わせについて</h2>
+    <p>LEGEND BIBLEに関するご意見・ご要望・不具合のご報告などは、以下のメールアドレスまでお気軽にご連絡ください。</p>
+    <p>内容を確認のうえ、3〜5営業日以内にご返信いたします。お問い合わせの内容によっては返答をお時間をいただく場合や、回答できない場合もございますのでご了承ください。</p>
+
+    <h2>お問い合わせ先</h2>
+    <div style="background:rgba(58,123,213,0.15);border:1px solid rgba(58,123,213,0.35);border-radius:12px;padding:20px 18px;margin:16px 0;">
+      <div style="font-size:13px;color:#000000;margin-bottom:6px;">メールアドレス</div>
+      <a href="mailto:legendbible.info@gmail.com" style="font-size:16px;font-weight:700;color:#000000;text-decoration:none;">legendbible.info@gmail.com</a>
+    </div>
+
+    <h2>お問い合わせ内容の例</h2>
+    <ul>
+      <li>名言・偉人情報の誤りのご指摘</li>
+      <li>掲載コンテンツに関するご質問</li>
+      <li>アプリの不具合・動作に関するご報告</li>
+      <li>著作権・コンテンツに関するお問い合わせ</li>
+      <li>その他ご意見・ご要望</li>
+    </ul>
+
+    <h2>ご注意</h2>
+    <p>いただいたご意見はサービス改善の参考にさせていただきますが、個別のご返答ができない場合もございます。また、営業・勧誘目的のお問い合わせにはお答えしかねますのでご了承ください。</p>
+
+    <div style="margin-top:28px;padding:16px 18px;background:rgba(255,255,255,0.05);border-radius:12px;font-size:13px;color:rgba(255,255,255,0.5);line-height:1.8;">
+      個人情報の取り扱いについては<span style="color:rgba(255,255,255,0.7);cursor:pointer;" onclick="switchTab('privacy')">プライバシーポリシー</span>をご参照ください。
+    </div>
   </div>
 </div>
 
@@ -5215,7 +5255,7 @@ function switchTab(tab) {
   if (modal) { modal.classList.remove('open'); }
   _closeSageFilterOverlay();
 
-  const screens = ['home','search','fav','history','settings','cat','privacy','terms','about','sage','diagnosis'];
+  const screens = ['home','search','fav','history','settings','cat','privacy','terms','about','sage','diagnosis','contact'];
   screens.forEach(s => document.getElementById('screen-'+s)?.classList.remove('active'));
   const tabs = ['home','search','diagnosis','fav','settings'];
   tabs.forEach(t => document.getElementById('tab-'+t)?.classList.remove('active'));
@@ -6240,7 +6280,7 @@ function clearAllFavs() {
 }
 
 // ── アプリバージョン（更新時にここを上げるとキャッシュが無効化される）──
-const APP_VERSION = '2.1.0';
+const APP_VERSION = '2.1.1';
 
 // QUOTESを外部JSONから非同期ロード
 async function loadQuotes() {
