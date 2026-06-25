@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://iphone-ma9.github.io/legendbible.github.io/output/sitemap.xml
