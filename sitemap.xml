@@ -512,6 +512,8 @@
   <url><loc>https://legendbible.github.io/sages/wren/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://legendbible.github.io/sages/hyun_ching/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://legendbible.github.io/sages/ibn_rushd/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/sages/miwa_akihiro/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/sages/charles_eames/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://legendbible.github.io/quotes/1/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://legendbible.github.io/quotes/2/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://legendbible.github.io/quotes/3/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -2596,4 +2598,13 @@
   <url><loc>https://legendbible.github.io/quotes/2488/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://legendbible.github.io/quotes/2489/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://legendbible.github.io/quotes/2490/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2491/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2492/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2493/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2494/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2495/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2496/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2497/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2498/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://legendbible.github.io/quotes/2499/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
